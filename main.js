@@ -212,6 +212,15 @@ document.addEventListener("DOMContentLoaded", function() {
                     case "fox":
                         topResultText = "섹시한 여우상";
                         break;
+                    case "monkey":
+                        topResultText = "장난기 가득한 원숭이상";
+                        break;
+                    case "tiger":
+                        topResultText = "강렬한 카리스마 호랑이상";
+                        break;
+                    case "horse":
+                        topResultText = "시원시원한 말상";
+                        break;
                     default:
                         topResultText = "알 수 없는 동물상";
                 }
@@ -239,6 +248,9 @@ document.addEventListener("DOMContentLoaded", function() {
                         case "bear": animalName = "곰상"; break;
                         case "deer": animalName = "사슴상"; break;
                         case "fox": animalName = "여우상"; break;
+                        case "monkey": animalName = "원숭이상"; break;
+                        case "tiger": animalName = "호랑이상"; break;
+                        case "horse": animalName = "말상"; break;
                     }
 
                     const predictionElement = document.createElement("div");
