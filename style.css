@@ -297,7 +297,58 @@ label[for="gender"] .knob i:last-child {
     font-weight: bold;
     color: #212529;
     margin-top: 0; /* Reset margin as it's now inside result-card p */
+    margin-bottom: 20px; /* Added margin-bottom for spacing */
 }
+
+#label-container {
+    width: 100%;
+    margin-top: 20px;
+    text-align: left;
+}
+
+#label-container > div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.animal-label {
+    width: 30%; /* Adjust width for label */
+    font-weight: bold;
+    color: #212529;
+}
+
+.bar-container {
+    flex-grow: 1;
+    height: 20px;
+    background-color: #E9ECEF;
+    border-radius: 5px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-bar {
+    height: 100%;
+    background-color: #6B9A6E; /* General progress bar color */
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 5px;
+    color: white;
+    font-size: 0.8rem;
+    transition: width 0.5s ease-out;
+}
+
+/* Specific colors for animal bars */
+.dog .progress-bar { background-color: #8D99AE; } /* Soft Grayish Blue */
+.cat .progress-bar { background-color: #BCB8B1; } /* Warm Gray */
+.rabbit .progress-bar { background-color: #D4A5A5; } /* Pale Rose */
+.dinosaur .progress-bar { background-color: #8AC6D1; } /* Light Blue-Green */
+.bear .progress-bar { background-color: #A2B9B2; } /* Sage Green */
+.deer .progress-bar { background-color: #DAB894; } /* Muted Peach */
+.fox .progress-bar { background-color: #E0BBE4; } /* Light Lilac */
+
 
 .try-again-btn {
     background-color: #6B9A6E;
@@ -308,7 +359,7 @@ label[for="gender"] .knob i:last-child {
     cursor: pointer;
     font-size: 1rem;
     transition: background-color 0.3s ease;
-    margin-top: 0; /* Reset margin as it's now inside result-card */
+    margin-top: 20px;
 }
 
 .try-again-btn:hover {
