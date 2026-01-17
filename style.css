@@ -301,7 +301,7 @@ label[for="gender"] .knob i:last-child {
 }
 
 #label-container {
-    width: 100%;
+    width: 80%;
     margin-top: 20px;
     text-align: left;
 }
