@@ -76,11 +76,64 @@ header {
     padding: 0 1rem; /* Add horizontal padding to the content */
 }
 
-.header-controls {
-    position: static; /* Remove absolute positioning */
+#language-switcher {
     display: flex;
-    gap: 10px;
-    align-items: center;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--ad-border); /* Border for the group */
+}
+
+.lang-btn {
+    background-color: var(--ad-bg);
+    color: var(--ad-text-color);
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    border: none; /* Remove individual button border */
+    position: relative;
+    z-index: 1; /* Ensure active button is on top if borders merge */
+}
+
+.lang-btn:not(.active):hover {
+    background-color: var(--ad-border);
+    color: var(--text-color);
+}
+
+.lang-btn.active {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 600;
+    box-shadow: inset 0 0 0 1px var(--primary-color); /* Highlight active */
+}
+
+#theme-switcher {
+    border-radius: 6px;
+    background-color: var(--ad-bg);
+    border: 1px solid var(--ad-border);
+}
+
+.theme-btn {
+    background-color: var(--ad-bg);
+    color: var(--ad-text-color);
+    padding: 8px 10px;
+    font-size: 1.2rem;
+    line-height: 1;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.theme-btn:hover {
+    background-color: var(--ad-border);
+    color: var(--text-color);
+}
+body.dark-mode .theme-btn {
+    color: #FFEB3B; /* Yellow for moon in dark mode */
+}
+body:not(.dark-mode) .theme-btn {
+    color: #FFC107; /* Orange for sun in light mode */
 }
 
 h1 {
