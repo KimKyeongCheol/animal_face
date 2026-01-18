@@ -326,28 +326,28 @@ footer {
 /* Mobile styles */
 @media (max-width: 768px) {
     header {
-        padding: 0.8rem 1rem; /* Adjust header padding */
+        padding: 0.8rem 1rem;
     }
     h1 {
-        font-size: 1.8rem; /* Slightly smaller h1 on mobile */
-        margin-top: 1rem; /* Give space below controls */
+        font-size: 1.8rem;
+        margin-top: 1rem;
     }
     .header-controls {
-        position: static; /* Remove absolute positioning */
-        flex-direction: row; /* Keep them in a row */
+        position: static;
+        flex-direction: row;
         justify-content: center;
         width: 100%;
-        margin-bottom: 0.5rem; /* Space below controls */
-        top: auto; /* Reset top */
-        right: auto; /* Reset right */
+        margin-bottom: 0.5rem;
+        top: auto;
+        right: auto;
     }
     #language-switcher, #theme-switcher {
         flex-direction: row;
-        gap: 0; /* Remove gap if buttons are designed to be adjacent */
+        gap: 0;
     }
     .lang-btn {
         padding: 5px 8px;
-        font-size: 0.75rem; /* Smaller font for buttons */
+        font-size: 0.75rem;
     }
     .theme-btn {
         padding: 5px 8px;
@@ -356,14 +356,15 @@ footer {
 
     .container {
         flex-direction: column;
-        padding: 0 0.5rem; /* Less horizontal padding */
+        padding: 0; /* Remove container padding on mobile */
     }
 
     main {
-        margin: 0.5rem;
-        padding: 1.5rem;
+        margin: 0.5rem auto; /* Center main horizontally */
+        padding: 1.5rem 1rem; /* Apply consistent horizontal padding to main */
+        width: calc(100% - 1rem); /* Account for padding */
         max-width: 100%;
-        box-shadow: none; /* Remove shadow on mobile main */
+        box-shadow: none;
     }
     
     #question-text {
