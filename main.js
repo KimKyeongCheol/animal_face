@@ -1,245 +1,148 @@
-document.addEventListener("DOMContentLoaded", function() {
-    console.log("DOM Content Loaded.");
+document.addEventListener('DOMContentLoaded', () => {
+    const startScreen = document.getElementById('start-screen');
+    const testScreen = document.getElementById('test-screen');
+    const resultScreen = document.getElementById('result-screen');
 
-    // Function to hide empty ad containers
-    function hideEmptyAdContainers() {
-        try {
-            const adContainers = document.querySelectorAll('.ad-top, .ad-bottom, .ad-side-left, .ad-side-right');
-            console.log("Checking ad containers:", adContainers.length);
-            adContainers.forEach(container => {
-                if (container.innerHTML.trim() === '') {
-                    container.classList.add('hidden');
-                    console.log(`Hidden empty ad container: ${container.className}`);
-                }
-            });
-        } catch (error) {
-            console.error("Error in hideEmptyAdContainers:", error);
+    const startBtn = document.getElementById('start-btn');
+    const retryBtn = document.getElementById('retry-btn');
+
+    const questionText = document.getElementById('question-text');
+    const answerButtons = document.getElementById('answer-buttons');
+    
+    const resultTitle = document.getElementById('result-title');
+    const resultDescription = document.getElementById('result-description');
+
+    // 데이터 구조 정의
+    const questions = [
+        {
+            text: "IF 길을 가다가 값비싸 보이는 지갑을 주웠다. THEN...",
+            choices: [
+                { text: "가까운 경찰서에 바로 가져다준다.", scores: { order: 1 } },
+                { text: "주인을 찾아주기 위해 지갑을 열어 신분증을 확인한다.", scores: { chaos: 1, emotion: 1 } },
+                { text: "내용물만 챙기고 지갑은 버린다.", scores: { chaos: 2 } },
+                { text: "고민하다가 일단 주머니에 넣고 계속 길을 간다.", scores: { logic: 1, chaos: 1 } }
+            ]
+        },
+        {
+            text: "IF 팀 프로젝트에서 아무도 힘든 역할을 맡으려 하지 않는다. THEN...",
+            choices: [
+                { text: "모두를 위해 내가 총대를 메고 힘든 역할을 자처한다.", scores: { emotion: 1, order: 1 } },
+                { text: "가장 합리적이고 공정한 방법으로 역할을 분담하자고 제안한다.", scores: { logic: 2 } },
+                { text: "일단 상황을 지켜보다가, 누군가 하겠지 하고 기다린다.", scores: { chaos: 1 } },
+                { text: "이 상황을 재밌어하며, 누가 맡게 될지 내기를 제안한다.", scores: { chaos: 2, emotion: 1 } }
+            ]
+        },
+        {
+            text: "IF 내일이 세상의 마지막 날이라는 것이 확실해졌다. THEN...",
+            choices: [
+                { text: "사랑하는 사람들과 마지막 순간을 함께 보낸다.", scores: { emotion: 2 } },
+                { text: "혼란 속에서 질서를 유지하기 위해 사람들을 돕는다.", scores: { order: 2 } },
+                { text: "평소에 해보고 싶었던 모든 일(합법 또는 불법)을 시도한다.", scores: { chaos: 2 } },
+                { text: "이 현상이 과학적으로 가능한지, 어떻게든 살아남을 방법은 없는지 분석한다.", scores: { logic: 2 } }
+            ]
+        },
+        {
+            text: "IF 매우 중요한 시험 전날, 친구가 급한 고민 상담을 요청했다. THEN...",
+            choices: [
+                { text: "시험이 중요하지만, 친구를 외면할 수 없어 이야기를 들어준다.", scores: { emotion: 2 } },
+                { text: "친구에게 상황을 설명하고, 시험이 끝난 직후에 바로 만나자고 약속한다.", scores: { logic: 1, order: 1 } },
+                { text: "일단 공부를 계속하며, 메시지로 간간이 답장해준다.", scores: { logic: 2 } },
+                { text: "모르겠다. 일단 같이 술이나 한잔하자고 한다.", scores: { chaos: 2 } }
+            ]
         }
+    ];
+
+    const results = {
+        LOGIC_MASTER: {
+            title: "논리주의 분석가 (Logic Master)",
+            description: "당신은 감정이나 혼돈에 휘둘리지 않고, 오직 데이터와 사실에 근거하여 판단하는 냉철한 분석가입니다. 모든 상황을 객관적으로 파악하고 가장 합리적인 해결책을 찾아내는 데 능숙합니다."
+        },
+        CHAOTIC_AGENT: {
+            title: "혼돈의 에이전트 (Chaotic Agent)",
+            description: "당신은 예측 불가능하며, 정해진 규칙이나 질서에 얽매이는 것을 싫어합니다. 당신의 행동은 즉흥적이며, 때로는 혼란을 야기하기도 하지만, 그 속에서 새로운 가능성을 발견하기도 하는 자유로운 영혼입니다."
+        },
+        ORDERLY_GUARDIAN: {
+            title: "질서의 수호자 (Orderly Guardian)",
+            description: "당신은 사회의 규칙과 질서를 중요하게 생각하며, 안정적인 상태를 유지하는 데서 평안을 느낍니다. 공동체의 이익을 위해 자신을 희생할 줄도 아는, 책임감 강한 수호자입니다."
+        },
+        EMPATHETIC_SOUL: {
+            title: "공감적 중재자 (Empathetic Soul)",
+            description: "당신은 타인의 감정을 깊이 이해하고 공감하는 능력이 뛰어납니다. 이성적인 판단보다는 사람 사이의 관계와 감정적인 조화를 중요하게 생각하며, 갈등을 중재하고 사람들을 하나로 모으는 역할을 합니다."
+        }
+    };
+
+    let currentQuestionIndex = 0;
+    let scores = { logic: 0, emotion: 0, order: 0, chaos: 0 };
+
+    function startTest() {
+        currentQuestionIndex = 0;
+        scores = { logic: 0, emotion: 0, order: 0, chaos: 0 };
+        startScreen.classList.add('hidden');
+        resultScreen.classList.add('hidden');
+        testScreen.classList.remove('hidden');
+        showQuestion();
     }
 
-    hideEmptyAdContainers();
-
-    const MODEL_URL = '/models'; // Models will be hosted in a /models directory
-    let selectedGender = 'female'; // Default to female
-    let faceApiModelsLoaded = false; // Flag to track if models are loaded
-
-    // --- Face-API.js Model Initialization ---
-    async function initFaceAPI() {
-        if (faceApiModelsLoaded) {
-            console.log("Face-API.js models already loaded.");
-            return;
-        }
-        try {
-            document.getElementById('loading').classList.remove('hidden'); // Show loading
-            console.log("Loading Face-API.js models...");
-            await faceapi.nets.ssdMobilenetv1.load(MODEL_URL);
-            await faceapi.nets.faceLandmark68Net.load(MODEL_URL);
-            await faceapi.nets.faceRecognitionNet.load(MODEL_URL);
-            faceApiModelsLoaded = true;
-            console.log("Face-API.js models loaded successfully.");
-            document.getElementById('loading').classList.add('hidden'); // Hide loading
-        } catch (error) {
-            console.error("Error loading Face-API.js models:", error);
-            document.getElementById('loading').classList.add('hidden');
-            document.querySelector('.result-message').innerHTML = '<p>얼굴 분석 모델 로딩에 실패했습니다. (콘솔 확인)</p>';
-            document.querySelector('.result-card').classList.remove('hidden');
-        }
-    }
-
-    // --- Gender Toggle Logic ---
-    const genderToggle = document.getElementById('gender');
-    if (genderToggle) {
-        selectedGender = genderToggle.checked ? 'male' : 'female';
-        console.log("Initial selected gender from toggle:", selectedGender);
-
-        genderToggle.addEventListener('change', async function() {
-            try {
-                selectedGender = this.checked ? 'male' : 'female';
-                console.log("Gender changed to:", selectedGender);
-
-                const fileUploadContent = document.querySelector('.file-upload-content');
-                if (fileUploadContent && !fileUploadContent.classList.contains('hidden')) {
-                    document.getElementById('loading').classList.remove('hidden');
-                    document.querySelector('.result-card').classList.add('hidden');
-                    document.querySelector('.result-message').innerHTML = '';
-                    await analyzeFace(); // Call analyzeFace
-                }
-            } catch (error) {
-                console.error("Error in genderToggle change event:", error);
-            }
+    function showQuestion() {
+        const question = questions[currentQuestionIndex];
+        questionText.innerText = question.text;
+        
+        answerButtons.innerHTML = ''; // 이전 버튼들 삭제
+        question.choices.forEach(choice => {
+            const button = document.createElement('button');
+            button.innerText = choice.text;
+            button.classList.add('answer-btn');
+            button.addEventListener('click', () => selectAnswer(choice));
+            answerButtons.appendChild(button);
         });
-    } else {
-        console.error("Gender toggle element (#gender) not found!");
     }
 
-    // --- Image Upload and Preview Functions ---
-    window.readURL = async function(input) {
-        try {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = async function(e) {
-                    try {
-                        const imageUploadWrap = document.querySelector('.image-upload-wrap');
-                        const loadingSpinner = document.getElementById('loading');
-                        const faceImage = document.getElementById('face-image');
-                        const fileUploadContent = document.querySelector('.file-upload-content');
-                        const resultCard = document.querySelector('.result-card');
-
-                        if (imageUploadWrap) imageUploadWrap.classList.add('hidden');
-                        if (loadingSpinner) loadingSpinner.classList.remove('hidden');
-                        if (faceImage) faceImage.src = e.target.result;
-                        if (fileUploadContent) fileUploadContent.classList.remove('hidden');
-                        if (resultCard) resultCard.classList.add('hidden');
-                        console.log("Image loaded and preview displayed.");
-
-                        await initFaceAPI(); // Ensure models are loaded
-                        await analyzeFace(); // Perform face analysis
-                    } catch (error) {
-                        console.error("Error in FileReader.onload:", error);
-                    }
-                };
-                reader.readAsDataURL(input.files[0]);
-            } else {
-                removeUpload();
+    function selectAnswer(choice) {
+        // 점수 합산
+        for (const key in choice.scores) {
+            if (scores.hasOwnProperty(key)) {
+                scores[key] += choice.scores[key];
             }
-        } catch (error) {
-            console.error("Error in readURL:", error);
         }
-    };
 
-    window.removeUpload = function() {
-        try {
-            const fileUploadContent = document.querySelector('.file-upload-content');
-            const imageUploadWrap = document.querySelector('.image-upload-wrap');
-            const faceImage = document.getElementById('face-image');
-            const loadingSpinner = document.getElementById('loading');
-            const resultCard = document.querySelector('.result-card');
-            const resultMessage = document.querySelector('.result-message');
-            const labelContainer = document.getElementById("label-container");
+        currentQuestionIndex++;
 
-
-            if (fileUploadContent) fileUploadContent.classList.add('hidden');
-            if (imageUploadWrap) imageUploadWrap.classList.remove('hidden');
-            if (faceImage) faceImage.src = '#';
-            if (loadingSpinner) loadingSpinner.classList.add('hidden');
-            if (resultCard) resultCard.classList.add('hidden');
-            if (resultMessage) resultMessage.innerHTML = '';
-            if (labelContainer) labelContainer.innerHTML = ''; // Clear prediction results
-            console.log("Upload removed.");
-        } catch (error) {
-            console.error("Error in removeUpload:", error);
-        }
-    };
-
-    // --- Face-API.js Analysis Function ---
-    async function analyzeFace() {
-        try {
-            console.log("analyzeFace function called.");
-            document.getElementById('loading').classList.remove('hidden'); // Show loading
-
-            if (!faceApiModelsLoaded) {
-                console.error("Face-API.js models not loaded. Attempting to initialize.");
-                await initFaceAPI();
-                if (!faceApiModelsLoaded) {
-                    document.getElementById('loading').classList.add('hidden');
-                    document.querySelector('.result-message').innerHTML = '<p>얼굴 분석 모델 로딩에 실패했습니다.</p>';
-                    document.querySelector('.result-card').classList.remove('hidden');
-                    return;
-                }
-            }
-
-            const image = document.getElementById("face-image");
-            if (!image || !image.src || image.src === '#') {
-                console.error("No image to analyze.");
-                document.getElementById('loading').classList.add('hidden');
-                return;
-            }
-
-            // Create a canvas from the image to ensure consistent processing
-            const canvas = faceapi.createCanvasFromMedia(image);
-            const displaySize = { width: image.width, height: image.height };
-            faceapi.matchDimensions(canvas, displaySize);
-
-            // Detect all faces in the image
-            const detections = await faceapi.detectAllFaces(image, new faceapi.SsdMobilenetv1Options())
-                .withFaceLandmarks()
-                .withFaceDescriptors();
-            
-            if (detections.length === 0) {
-                console.log("No faces detected.");
-                document.getElementById('loading').classList.add('hidden');
-                document.querySelector('.result-message').innerHTML = '<p>사진에서 얼굴을 찾을 수 없습니다.</p>';
-                document.querySelector('.result-card').classList.remove('hidden');
-                return;
-            }
-
-            // For simplicity, let's take the first detected face
-            const faceDescriptor = detections[0].descriptor;
-            console.log("Face descriptor extracted:", faceDescriptor);
-
-            // --- Placeholder for Similarity Comparison (to be replaced with actual reference data) ---
-            const labelContainer = document.getElementById("label-container");
-            const resultCard = document.querySelector('.result-card');
-            const resultMessage = document.querySelector('.result-message');
-
-            if (resultMessage) {
-                resultMessage.innerHTML = `<p>얼굴 특징 분석 완료!</p>`;
-            }
-
-            if (labelContainer) {
-                labelContainer.innerHTML = ''; // Clear previous bars
-                // Dummy results for demonstration
-                const animalResults = [
-                    { className: "dog", probability: 0.75 },
-                    { className: "cat", probability: 0.50 },
-                    { className: "fox", probability: 0.30 },
-                    { className: "rabbit", probability: 0.20 },
-                    { className: "bear", probability: 0.10 },
-                ];
-
-                for (let i = 0; i < animalResults.length; i++) {
-                    const percent = Math.round(animalResults[i].probability * 100);
-                    let barWidth = percent > 0 ? percent + "%" : "0%";
-
-                    let animalName = animalResults[i].className;
-                    switch (animalName) {
-                        case "dog": animalName = "강아지상"; break;
-                        case "cat": animalName = "고양이상"; break;
-                        case "rabbit": animalName = "토끼상"; break;
-                        case "dinosaur": animalName = "공룡상"; break;
-                        case "bear": animalName = "곰상"; break;
-                        case "deer": animalName = "사슴상"; break;
-                        case "fox": animalName = "여우상"; break;
-                        case "monkey": animalName = "원숭이상"; break;
-                        case "tiger": animalName = "호랑이상"; break;
-                        case "horse": animalName = "말상"; break;
-                        case "snake": animalName = "뱀상"; break;
-                        case "squirrel": animalName = "다람쥐상"; break;
-                    }
-
-                    const predictionElement = document.createElement("div");
-                    predictionElement.className = animalResults[i].className;
-                    predictionElement.innerHTML = `
-                        <div class="animal-label">${animalName}</div>
-                        <div class="bar-container">
-                            <div class="progress-bar ${animalResults[i].className}" style="width: ${barWidth}">${percent}%</div>
-                        </div>
-                    `;
-                    labelContainer.appendChild(predictionElement);
-                }
-            }
-            
-            document.getElementById('loading').classList.add('hidden'); // Hide loading
-            if (resultCard) resultCard.classList.remove('hidden'); // Show result card
-
-        } catch (error) {
-            console.error("Error during Face-API.js analysis:", error);
-            document.getElementById('loading').classList.add('hidden');
-            document.querySelector('.result-message').innerHTML = '<p>얼굴 분석 중 오류가 발생했습니다. (콘솔 확인)</p>';
-            document.querySelector('.result-card').classList.remove('hidden');
+        if (currentQuestionIndex < questions.length) {
+            showQuestion();
+        } else {
+            showResult();
         }
     }
 
-    // Initial load of Face-API.js models
-    initFaceAPI();
+    function calculateResult() {
+        // 가장 높은 점수를 받은 유형 찾기
+        const finalScores = Object.entries(scores); // [['logic', 2], ['emotion', 4] ...]
+        finalScores.sort((a, b) => b[1] - a[1]); // 점수가 높은 순으로 정렬
+        const highestType = finalScores[0][0];
+
+        switch(highestType) {
+            case 'logic': return results.LOGIC_MASTER;
+            case 'chaos': return results.CHAOTIC_AGENT;
+            case 'order': return results.ORDERLY_GUARDIAN;
+            case 'emotion': return results.EMPATHETIC_SOUL;
+            default: return results.LOGIC_MASTER; // 기본값
+        }
+    }
+
+    function showResult() {
+        const finalResult = calculateResult();
+        resultTitle.innerText = finalResult.title;
+        resultDescription.innerText = finalResult.description;
+
+        testScreen.classList.add('hidden');
+        resultScreen.classList.remove('hidden');
+    }
+    
+    function restartTest() {
+      resultScreen.classList.add('hidden');
+      startScreen.classList.remove('hidden');
+    }
+
+    startBtn.addEventListener('click', startTest);
+    retryBtn.addEventListener('click', restartTest);
 });
