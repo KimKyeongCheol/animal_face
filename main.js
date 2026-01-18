@@ -496,10 +496,7 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('share-buttons').classList.add('hidden'); // Hide share buttons on restart
     }
 
-    const goHomeBtn = document.getElementById('go-to-start-btn');
-    const shareKakaoBtn = document.getElementById('share-kakaotalk');
-    const shareTwitterBtn = document.getElementById('share-twitter');
-    const shareFacebookBtn = document.getElementById('share-facebook');
+
 
     // ...
 
