@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentLang = 'ko';
     let currentTestQuestions = [];
 
-    const NUM_QUESTIONS_PER_TEST = 5; // Number of questions to show per test run
+    const NUM_QUESTIONS_PER_TEST = 20; // Number of questions to show per test run (increased for more robust results)
 
     // --- Language Data (questions will be loaded dynamically) ---
     const langData = {
@@ -268,15 +268,15 @@ document.addEventListener('DOMContentLoaded', () => {
         questionText.innerText = questionData.text;
         progressIndicator.innerText = `${langData[currentLang].questionPrefix} ${currentQuestionIndex + 1} ${langData[currentLang].of} ${currentTestQuestions.length}`;
         
-        answerButtons.innerHTML = '';
-        questionData.choices.forEach((choice, index) => {
-            const button = document.createElement('button');
-            button.innerText = choice.text;
-            button.classList.add('answer-btn');
-            button.addEventListener('click', () => selectAnswer(choice));
-            answerButtons.appendChild(button);
-        });
-    }
+                        answerButtons.innerHTML = '';
+                        const shuffledChoices = shuffleArray([...questionData.choices]); // Shuffle choices for the current question
+                        shuffledChoices.forEach((choice, index) => {
+                            const button = document.createElement('button');
+                            button.innerText = choice.text;
+                            button.classList.add('answer-btn');
+                            button.addEventListener('click', () => selectAnswer(choice));
+                            answerButtons.appendChild(button);
+                        });    }
 
     function selectAnswer(choice) {
         for (const key in choice.scores) {
