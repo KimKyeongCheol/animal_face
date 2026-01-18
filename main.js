@@ -529,7 +529,6 @@ document.addEventListener('DOMContentLoaded', () => {
     shareKakaoBtn.addEventListener('click', shareKakaoTalk);
     shareTwitterBtn.addEventListener('click', shareTwitter);
     shareFacebookBtn.addEventListener('click', shareFacebook);
-    goHomeBtn.addEventListener('click', goToStartScreen); // New
 
     // --- Ad Hiding Functionality ---
     function hideEmptyAdContainers() {
