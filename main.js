@@ -192,11 +192,16 @@ document.addEventListener('DOMContentLoaded', () => {
     function switchLanguage(lang) {
         currentLang = lang;
         localStorage.setItem('logicTreeLang', lang);
-        // Regenerate questions only if the test is NOT active (i.e., on start or result screen)
+        // If the test is NOT active (on start/result screen), regenerate random questions for the new language.
         if (testScreen.classList.contains('hidden')) { 
             generateRandomQuestions();
+            updateUI(lang); // Update UI for start/result screen
+        } else {
+            // If the test IS active, simply update the current question's UI elements to the new language
+            // (e.g., question text, choices text) without regenerating the whole test.
+            showQuestion(); // <--- Re-render current question with new language
+            updateUI(lang); // Update other UI elements (like result screen if active)
         }
-        updateUI(lang);
     }
 
     function toggleTheme() {
