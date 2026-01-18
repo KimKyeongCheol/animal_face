@@ -320,11 +320,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const highestType = finalScores[0][0];
         console.log("Highest type determined:", highestType); // Log the determined highest type
 
-        if (langData[currentLang].results.hasOwnProperty(highestType)) {
-            return langData[currentLang].results[highestType];
+        const typeKeyToResultKey = {
+            emotion: 'EMPATHETIC_SOUL',
+            logic: 'LOGIC_MASTER',
+            order: 'ORDERLY_GUARDIAN',
+            chaos: 'CHAOTIC_AGENT'
+        };
+
+        const resultKey = typeKeyToResultKey[highestType];
+        console.log("Mapped result key:", resultKey);
+
+        if (langData[currentLang].results.hasOwnProperty(resultKey)) {
+            return langData[currentLang].results[resultKey];
         } else {
-            // Fallback if highestType somehow doesn't match known results (shouldn't happen with current logic)
-            console.warn("Highest type ('", highestType, "') not found in results data. Falling back to LOGIC_MASTER.");
+            console.warn("Mapped result key ('", resultKey, "') not found in results data. Falling back to LOGIC_MASTER.");
             return langData[currentLang].results.LOGIC_MASTER; 
         }
         console.log("--- End Calculating Result ---"); // Add end log
