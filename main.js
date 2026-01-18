@@ -223,7 +223,6 @@ document.addEventListener('DOMContentLoaded', () => {
             body.classList.remove('dark-mode');
             themeToggleBtn.innerText = '☀️';
         }
-        generateRandomQuestions(); // Generate initial questions based on loaded lang
         updateUI(currentLang);
     }
 
@@ -242,7 +241,21 @@ document.addEventListener('DOMContentLoaded', () => {
     function startTest() {
         currentQuestionIndex = 0;
         scores = { logic: 0, emotion: 0, order: 0, chaos: 0 };
+        
+        // Ensure questions are available before attempting to generate or show them
+        if (langData[currentLang].questions.length === 0) {
+            alert(langData[currentLang].questions.length === 0 && currentLang === 'ko' ? "질문이 로드되지 않아 테스트를 시작할 수 없습니다. 파일을 확인하거나 웹 서버를 사용해 주세요." : "Questions could not be loaded, unable to start test. Please check the file or use a web server.");
+            console.error("Cannot start test: Question pool is empty.");
+            return; // Prevent further execution if questions are not loaded
+        }
+
         generateRandomQuestions();
+        if (currentTestQuestions.length === 0) { // If generateRandomQuestions somehow still resulted in an empty array
+            alert(currentLang === 'ko' ? "테스트 질문을 생성할 수 없습니다. 질문 파일 형식을 확인해주세요." : "Could not generate test questions. Please check the question file format.");
+            console.error("Cannot start test: currentTestQuestions is empty after generation.");
+            return;
+        }
+
         startScreen.classList.add('hidden');
         resultScreen.classList.add('hidden');
         resultScreen.classList.remove('result-logic', 'result-chaos', 'result-order', 'result-emotion');
@@ -283,16 +296,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function calculateResult() {
         const finalScores = Object.entries(scores);
-        if (finalScores.length === 0) {
-            return langData[currentLang].results.LOGIC_MASTER; 
+        // Check if all scores are zero, indicating no questions were answered or loaded successfully
+        const allScoresZero = finalScores.every(([key, value]) => value === 0);
+
+        if (allScoresZero) {
+            return {
+                title: langData[currentLang].results.LOGIC_MASTER.title, // Use title from an existing result for consistency
+                description: currentLang === 'ko' ? "질문이 로드되지 않았거나 답변이 선택되지 않아 결과를 도출할 수 없습니다." : "Could not determine result as questions were not loaded or no answers were selected.",
+                icon: "❓",
+                className: "result-default" // A new class for this scenario, define in CSS if needed
+            };
         }
+
         finalScores.sort((a, b) => b[1] - a[1]);
         const highestType = finalScores[0][0];
 
         if (langData[currentLang].results.hasOwnProperty(highestType)) {
             return langData[currentLang].results[highestType];
         } else {
-            return langData[currentLang].results.LOGIC_MASTER;
+            // Fallback if highestType somehow doesn't match known results (shouldn't happen with current logic)
+            return langData[currentLang].results.LOGIC_MASTER; 
         }
     }
 
@@ -330,9 +353,19 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Load questions then preferences and hide empty ads on initial load
+    // Load questions, then preferences, then generate initial questions, then hide empty ads
     loadQuestions().then(() => {
-        loadPreferences();
+        loadPreferences(); // Load language and theme preferences
+        // After questions are loaded and preferences set, generate initial questions
+        if (langData[currentLang] && langData[currentLang].questions && langData[currentLang].questions.length > 0) {
+            generateRandomQuestions();
+        } else {
+            console.error("Initial question generation skipped: Question pool is empty or not properly loaded.");
+            // Consider alerting the user or disabling start button if no questions can be loaded
+        }
         hideEmptyAdContainers();
+    }).catch(error => {
+        console.error("An error occurred during initial load sequence:", error);
+        alert("Failed to load necessary application data. Please ensure the 'data/questions.json' file is accessible and properly formatted, and try running with a local web server.");
     });
 });
