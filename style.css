@@ -216,6 +216,7 @@ footer {
 }
 
 .ad-top, .ad-bottom, .ad-side-left, .ad-side-right {
+    display: none; /* Force hide ad containers as requested */
     background-color: var(--ad-bg);
     color: var(--ad-text-color);
     padding: 0.8rem;
