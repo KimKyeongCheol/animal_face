@@ -19,6 +19,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const langKoBtn = document.getElementById('lang-ko');
     const langEnBtn = document.getElementById('lang-en');
     const body = document.body;
+    const goHomeBtn = document.getElementById('go-to-start-btn'); // New
+    const shareKakaoBtn = document.getElementById('share-kakaotalk');
+    const shareTwitterBtn = document.getElementById('share-twitter');
+    const shareFacebookBtn = document.getElementById('share-facebook');
 
     let currentQuestionIndex = 0;
     let scores = { logic: 0, emotion: 0, order: 0, chaos: 0 };
@@ -373,8 +377,76 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
+    // Global variable to store the last calculated result for sharing
+    let lastCalculatedResult = null;
+
+    function getShareText() {
+        const primaryTitle = lastCalculatedResult.primary.title;
+        const primaryDescription = lastCalculatedResult.primary.description;
+        const siteUrl = window.location.href; // Get current page URL
+
+        let shareText = `${langData[currentLang].appTitle} ${langData[currentLang].resultScreen.h2}\n${primaryTitle}\n\n${primaryDescription}\n\n`;
+
+        if (lastCalculatedResult.secondary && lastCalculatedResult.secondary.length > 0) {
+            shareText += currentLang === 'ko' ? "또한, 당신은 다음과 같은 성향을 보입니다:\n" : "Additionally, you show tendencies towards:\n";
+            lastCalculatedResult.secondary.forEach(secondary => {
+                shareText += ` - ${secondary.data.title}\n`;
+            });
+        }
+        shareText += siteUrl; // Add the URL to the share text
+        return encodeURIComponent(shareText);
+    }
+
+    function shareKakaoTalk() {
+        // Kakao SDK integration would go here. For now, use a generic alert.
+        // Requires Kakao SDK to be loaded and initialized in index.html.
+        alert(currentLang === 'ko' ? "카카오톡 공유 기능은 현재 개발 중입니다. (Kakao SDK 필요)" : "KakaoTalk sharing is currently under development. (Requires Kakao SDK)");
+        // Example if Kakao SDK is initialized:
+        /*
+        if (Kakao && Kakao.isInitialized()) {
+            Kakao.Share.sendDefault({
+                objectType: 'feed',
+                content: {
+                    title: lastCalculatedResult.primary.title,
+                    description: lastCalculatedResult.primary.description,
+                    imageUrl: 'YOUR_IMAGE_URL', // You might want an image related to the result
+                    link: {
+                        mobileWebUrl: window.location.href,
+                        webUrl: window.location.href,
+                    },
+                },
+                buttons: [
+                    {
+                        title: currentLang === 'ko' ? '테스트 결과 보기' : 'View Test Result',
+                        link: {
+                            mobileWebUrl: window.location.href,
+                            webUrl: window.location.href,
+                        },
+                    },
+                ],
+            });
+        }
+        */
+    }
+
+    function shareTwitter() {
+        if (!lastCalculatedResult) return;
+        const tweetText = getShareText();
+        const twitterUrl = `https://twitter.com/intent/tweet?text=${tweetText}`;
+        window.open(twitterUrl, '_blank', 'width=600,height=300');
+    }
+
+    function shareFacebook() {
+        if (!lastCalculatedResult) return;
+        // Facebook's sharer.php works best if the URL is the one to be shared,
+        // and it fetches meta tags from that URL. Custom quote might be ignored.
+        const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}&quote=${getShareText()}`;
+        window.open(facebookUrl, '_blank', 'width=600,height=400');
+    }
+
     function showResult() {
-        const fullResult = calculateResult(); // Returns { primary: ..., secondary: [...] }
+        const fullResult = calculateResult();
+        lastCalculatedResult = fullResult; // Store the result for sharing
 
         // Clear previous results
         resultTitle.innerText = '';
@@ -414,15 +486,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
         testScreen.classList.add('hidden');
         resultScreen.classList.remove('hidden');
+        document.getElementById('share-buttons').classList.remove('hidden'); // Ensure share buttons are visible
     }
     
     function restartTest() {
       resultScreen.classList.add('hidden');
       startScreen.classList.remove('hidden');
-      resultScreen.classList.remove('result-logic', 'result-chaos', 'result-order', 'result-emotion');
+      resultScreen.classList.remove('result-logic', 'result-chaos', 'result-order', 'result-emotion', 'result-default');
+      document.getElementById('share-buttons').classList.add('hidden'); // Hide share buttons on restart
     }
 
-    const goHomeBtn = document.getElementById('go-to-start-btn'); // New
+    const goHomeBtn = document.getElementById('go-to-start-btn');
+    const shareKakaoBtn = document.getElementById('share-kakaotalk');
+    const shareTwitterBtn = document.getElementById('share-twitter');
+    const shareFacebookBtn = document.getElementById('share-facebook');
 
     // ...
 
@@ -448,6 +525,10 @@ document.addEventListener('DOMContentLoaded', () => {
     themeToggleBtn.addEventListener('click', toggleTheme);
     langKoBtn.addEventListener('click', () => switchLanguage('ko'));
     langEnBtn.addEventListener('click', () => switchLanguage('en'));
+    goHomeBtn.addEventListener('click', goToStartScreen);
+    shareKakaoBtn.addEventListener('click', shareKakaoTalk);
+    shareTwitterBtn.addEventListener('click', shareTwitter);
+    shareFacebookBtn.addEventListener('click', shareFacebook);
     goHomeBtn.addEventListener('click', goToStartScreen); // New
 
     // --- Ad Hiding Functionality ---

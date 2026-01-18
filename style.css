@@ -361,32 +361,47 @@ footer {
     color: var(--primary-color);
 }
 
-#secondary-results {
+/* Share Buttons Styling */
+#share-buttons {
     margin-top: 2rem;
-    padding-top: 1.5rem;
-    border-top: 1px dashed var(--ad-border);
-    text-align: left;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
+    display: flex;
+    flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+    gap: 10px;
+    justify-content: center;
 }
 
-.secondary-results-title {
-    font-size: 1.2rem;
-    color: var(--question-text-color);
-    margin-bottom: 1rem;
+.share-btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
     font-weight: 600;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 5px var(--box-shadow-medium);
 }
 
-.secondary-result-item {
-    font-size: 1.05rem;
-    margin-bottom: 0.8rem;
-    line-height: 1.6;
-    color: var(--text-color);
+.share-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
 }
 
-.secondary-result-item strong {
-    color: var(--primary-color);
+.share-btn.kakaotalk {
+    background-color: #FEE500;
+    color: #191919;
+}
+
+.share-btn.twitter {
+    background-color: #1DA1F2;
+    color: white;
+}
+
+.share-btn.facebook {
+    background-color: #1877F2;
+    color: white;
 }
 
 .try-again-btn {
