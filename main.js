@@ -316,18 +316,23 @@ document.addEventListener('DOMContentLoaded', () => {
         if (allScoresZero) {
             console.log("All scores are zero. Returning generic message.");
             return {
-                title: langData[currentLang].results.LOGIC_MASTER.title, // Use title from an existing result for consistency
-                description: currentLang === 'ko' ? "질문이 로드되지 않았거나 답변이 선택되지 않아 결과를 도출할 수 없습니다." : "Could not determine result as questions were not loaded or no answers were selected.",
-                icon: "❓",
-                className: "result-default" // A new class for this scenario, define in CSS if needed
+                primary: {
+                    title: langData[currentLang].results.LOGIC_MASTER.title, // Use title from an existing result for consistency
+                    description: currentLang === 'ko' ? "질문이 로드되지 않았거나 답변이 선택되지 않아 결과를 도출할 수 없습니다." : "Could not determine result as questions were not loaded or no answers were selected.",
+                    icon: "❓",
+                    className: "result-default"
+                },
+                secondary: [], // No secondary results if no answers
+                rawScores: scores // Include raw scores for debugging
             };
         }
 
         finalScores.sort((a, b) => b[1] - a[1]); // Sorts descending by score value
-        console.log("finalScores after sort:", finalScores); // Log array after sort
+        console.log("finalScores after sort:", finalScores);
 
-        const highestType = finalScores[0][0];
-        console.log("Highest type determined:", highestType); // Log the determined highest type
+        // Determine primary result
+        const highestScore = finalScores[0][1];
+        const primaryTypeKey = finalScores[0][0];
 
         const typeKeyToResultKey = {
             emotion: 'EMPATHETIC_SOUL',
@@ -336,24 +341,76 @@ document.addEventListener('DOMContentLoaded', () => {
             chaos: 'CHAOTIC_AGENT'
         };
 
-        const resultKey = typeKeyToResultKey[highestType];
-        console.log("Mapped result key:", resultKey);
+        const primaryResultKey = typeKeyToResultKey[primaryTypeKey];
+        const primaryResultData = langData[currentLang].results[primaryResultKey] || langData[currentLang].results.LOGIC_MASTER;
 
-        if (langData[currentLang].results.hasOwnProperty(resultKey)) {
-            return langData[currentLang].results[resultKey];
-        } else {
-            console.warn("Mapped result key ('", resultKey, "') not found in results data. Falling back to LOGIC_MASTER.");
-            return langData[currentLang].results.LOGIC_MASTER; 
+        console.log("Primary type determined:", primaryTypeKey);
+        console.log("Mapped primary result key:", primaryResultKey);
+
+        // Determine secondary results
+        const secondaryResults = [];
+        for (let i = 0; i < finalScores.length; i++) {
+            const [type, score] = finalScores[i];
+            // Include secondary results if their score is non-zero, not the primary type,
+            // and their score is close to the highest (e.g., highest - 2 points) or just top N
+            if (score > 0 && type !== primaryTypeKey && secondaryResults.length < 2) { // Limit to top 2 secondary results
+                const secondaryResultKey = typeKeyToResultKey[type];
+                if (langData[currentLang].results.hasOwnProperty(secondaryResultKey)) {
+                    secondaryResults.push({
+                        type: type, // e.g., 'emotion'
+                        score: score,
+                        data: langData[currentLang].results[secondaryResultKey]
+                    });
+                }
+            }
         }
-        console.log("--- End Calculating Result ---"); // Add end log
+        console.log("Secondary results:", secondaryResults);
+
+        return {
+            primary: primaryResultData,
+            secondary: secondaryResults,
+            rawScores: scores // Include raw scores for debugging/future use
+        };
     }
 
     function showResult() {
-        const finalResult = calculateResult();
-        resultTitle.innerText = finalResult.title;
-        resultDescription.innerText = finalResult.description;
-        resultIcon.innerText = finalResult.icon;
-        resultScreen.classList.add(finalResult.className);
+        const fullResult = calculateResult(); // Returns { primary: ..., secondary: [...] }
+
+        // Clear previous results
+        resultTitle.innerText = '';
+        resultDescription.innerText = '';
+        resultIcon.innerText = '';
+        resultScreen.classList.remove('result-logic', 'result-chaos', 'result-order', 'result-emotion', 'result-default');
+
+        // Display Primary Result
+        resultTitle.innerText = fullResult.primary.title;
+        resultDescription.innerText = fullResult.primary.description;
+        resultIcon.innerText = fullResult.primary.icon;
+        resultScreen.classList.add(fullResult.primary.className);
+
+        // Display Secondary Results
+        const secondaryResultsDiv = document.getElementById('secondary-results');
+        secondaryResultsDiv.innerHTML = ''; // Clear previous secondary results
+
+        if (fullResult.secondary && fullResult.secondary.length > 0) {
+            const currentLangData = langData[currentLang];
+            const secondaryTitle = document.createElement('h3');
+            secondaryTitle.classList.add('secondary-results-title');
+            secondaryTitle.innerText = currentLang === 'ko' ? "또한, 당신은 다음과 같은 성향을 보입니다:" : "Additionally, you show tendencies towards:";
+            secondaryResultsDiv.appendChild(secondaryTitle);
+
+            fullResult.secondary.forEach(secondary => {
+                const p = document.createElement('p');
+                p.classList.add('secondary-result-item');
+                p.innerHTML = `${secondary.data.icon} <strong>${secondary.data.title}</strong> (${secondary.score} ${currentLang === 'ko' ? '점' : 'pts'})`;
+                secondaryResultsDiv.appendChild(p);
+            });
+        } else if (!fullResult.primary.className.includes('result-default')) { // Only if not already showing generic msg
+             const p = document.createElement('p');
+             p.classList.add('secondary-result-item');
+             p.innerText = currentLang === 'ko' ? "다른 특출난 성향은 발견되지 않았습니다." : "No other prominent tendencies were found.";
+             secondaryResultsDiv.appendChild(p);
+        }
 
         testScreen.classList.add('hidden');
         resultScreen.classList.remove('hidden');
