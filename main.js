@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const NUM_QUESTIONS_PER_TEST = 5; // Number of questions to show per test run
 
-    // --- Language Data ---
+    // --- Language Data (questions will be loaded dynamically) ---
     const langData = {
         ko: {
             appTitle: "LOGIC-TREE",
@@ -68,143 +68,48 @@ document.addEventListener('DOMContentLoaded', () => {
                     className: "result-emotion"
                 }
             },
-            questions: [
-                {
-                    text: "길을 가다가 값비싸 보이는 지갑을 주웠다...",
-                    choices: [
-                        { text: "가까운 경찰서에 바로 가져다준다.", scores: { order: 1 } },
-                        { text: "주인을 찾아주기 위해 지갑을 열어 신분증을 확인한다.", scores: { chaos: 1, emotion: 1 } },
-                        { text: "내용물만 챙기고 지갑은 버린다.", scores: { chaos: 2 } },
-                        { text: "고민하다가 일단 주머니에 넣고 계속 길을 간다.", scores: { logic: 1, chaos: 1 } }
-                    ]
+            questions: [] // Questions will be loaded dynamically
+        },
+        en: {
+            appTitle: "LOGIC-TREE",
+            startScreen: {
+                h2: "Analyze Your Mind Type.",
+                p: "Answer a few scenario-based questions and discover your thought patterns."
+            },
+            startButton: "Start Test",
+            retryButton: "Retake Test",
+            questionPrefix: "Question",
+            of: "of",
+            resultScreen: {
+                h2: "Your Mind Type is:"
+            },
+            results: {
+                LOGIC_MASTER: {
+                    title: "Logic Master 🧠",
+                    description: "You are a cool-headed analyst who makes decisions based solely on data and clear facts, unswayed by emotions or uncertainty. You excel at objectively grasping all situations and finding the most efficient and rational solutions.",
+                    icon: "🧠",
+                    className: "result-logic"
                 },
-                {
-                    text: "팀 프로젝트에서 아무도 힘든 역할을 맡으려 하지 않는다...",
-                    choices: [
-                        { text: "모두를 위해 내가 총대를 메고 힘든 역할을 자처한다.", scores: { emotion: 1, order: 1 } },
-                        { text: "가장 합리적이고 공정한 방법으로 역할을 분담하자고 제안한다.", scores: { logic: 2 } },
-                        { text: "일단 상황을 지켜보다가, 누군가 하겠지 하고 기다린다.", scores: { chaos: 1 } },
-                        { text: "이 상황을 재밌어하며, 누가 맡게 될지 내기를 제안한다.", scores: { chaos: 2, emotion: 1 } }
-                    ]
+                CHAOTIC_AGENT: {
+                    title: "Chaotic Agent 🌪️",
+                    description: "You are a mind full of unpredictable energy and creativity. You dislike being bound by fixed rules or frameworks, exploring new possibilities spontaneously and freely. Your actions sometimes cause chaos, but innovative ideas often emerge from them.",
+                    icon: "🌪️",
+                    className: "result-chaos"
                 },
-                {
-                    text: "내일이 세상의 마지막 날이라는 것이 확실해졌다...",
-                    choices: [
-                        { text: "사랑하는 사람들과 마지막 순간을 함께 보낸다.", scores: { emotion: 2 } },
-                        { text: "혼란 속에서 질서를 유지하기 위해 사람들을 돕는다.", scores: { order: 2 } },
-                        { text: "평소에 해보고 싶었던 모든 일(합법 또는 불법)을 시도한다.", scores: { chaos: 2 } },
-                        { text: "이 현상이 과학적으로 가능한지, 어떻게든 살아남을 방법은 없는지 분석한다.", scores: { logic: 2 } }
-                    ]
+                ORDERLY_GUARDIAN: {
+                    title: "Orderly Guardian 🛡️",
+                    description: "You are a responsible mind that prioritizes stability and harmony. You value societal rules and order, seeking systematic solutions even in chaotic situations without losing composure. You dedicate yourself to the well-being of the community and feel at peace when everything is in its proper place.",
+                    icon: "🛡️",
+                    className: "result-order"
                 },
-                {
-                    text: "매우 중요한 시험 전날, 친구가 급한 고민 상담을 요청했다...",
-                    choices: [
-                        { text: "시험이 중요하지만, 친구를 외면할 수 없어 이야기를 들어준다.", scores: { emotion: 2 } },
-                        { text: "친구에게 상황을 설명하고, 시험이 끝난 직후에 바로 만나자고 약속한다.", scores: { logic: 1, order: 1 } },
-                        { text: "일단 공부를 계속하며, 메시지로 간간이 답장해준다.", scores: { logic: 2 } },
-                        { text: "모르겠다. 일단 같이 술이나 한잔하자고 한다.", scores: { chaos: 2 } }
-                    ]
-                },
-                {
-                    text: "새로운 취미를 시작하려고 한다...",
-                    choices: [
-                        { text: "여러 취미를 탐색하며 즉흥적으로 끌리는 것에 도전한다.", scores: { chaos: 1 } },
-                        { text: "흥미와 비용, 시간 효율 등을 따져 가장 합리적인 취미를 선택한다.", scores: { logic: 1 } },
-                        { text: "이미 많은 사람들이 즐기며 체계가 잘 잡힌 취미를 선택한다.", scores: { order: 1 } },
-                        { text: "주변 친구들이나 지인들이 추천하는 취미를 함께 시작한다.", scores: { emotion: 1 } }
-                    ]
-                },
-                {
-                    text: "어려운 문제에 부딪혔을 때...",
-                    choices: [
-                        { text: "문제의 원인을 철저히 분석하고 해결책을 논리적으로 찾아낸다.", scores: { logic: 2 } },
-                        { text: "직관에 따라 여러 방법을 시도해보고 되는대로 밀고 나간다.", scores: { chaos: 2 } },
-                        { text: "정해진 절차나 매뉴얼에 따라 차근차근 해결한다.", scores: { order: 2 } },
-                        { text: "주변 사람들과 상의하며 도움을 요청한다.", scores: { emotion: 2 } }
-                    ]
-                },
-                {
-                    text: "친구가 힘들어할 때...",
-                    choices: [
-                        { text: "친구의 감정에 공감하며 위로해준다.", scores: { emotion: 2 } },
-                        { text: "친구의 문제 상황을 객관적으로 듣고 해결책을 제시한다.", scores: { logic: 2 } },
-                        { text: "친구에게 힘내라고 격려하며 함께 시간을 보낸다.", scores: { order: 1, emotion: 1 } },
-                        { text: "술이나 한잔하자고 하며 분위기를 전환하려 한다.", scores: { chaos: 2 } }
-                    ]
-                },
-                {
-                    text: "예상치 못한 상황으로 계획이 틀어졌다...",
-                    choices: [
-                        { text: "침착하게 상황을 분석하고 새로운 계획을 세운다.", scores: { logic: 2 } },
-                        { text: "뜻밖의 즐거움이 있을지도? 하며 변화를 받아들인다.", scores: { chaos: 2 } },
-                        { text: "흐트러진 계획을 수습하고 원래의 목표를 향해 나아간다.", scores: { order: 2 } },
-                        { text: "실망하지만, 이내 주변 사람들과 함께 극복하려 한다.", scores: { emotion: 2 } }
-                    ]
-                },
-                {
-                    text: "새로운 사람을 만났을 때...",
-                    choices: [
-                        { text: "상대방의 표정과 말투에서 감정 상태를 먼저 파악한다.", scores: { emotion: 1 } },
-                        { text: "상대방의 배경이나 정보 등을 먼저 파악하여 관계의 틀을 세운다.", scores: { logic: 1 } },
-                        { text: "대화의 흐름에 몸을 맡기고 편안하게 교류한다.", scores: { chaos: 1 } },
-                        { text: "예의와 격식을 갖춰 조심스럽게 관계를 시작한다.", scores: { order: 1 } }
-                    ]
-                },
-                {
-                    text: "휴가를 계획한다면...",
-                    choices: [
-                        { text: "모든 동선과 예산을 철저히 계획하여 효율적인 휴가를 만든다.", scores: { logic: 2 } },
-                        { text: "가보고 싶은 곳 몇 군데만 정하고, 나머지는 즉흥적으로 결정한다.", scores: { chaos: 2 } },
-                        { text: "유명 관광지나 검증된 코스를 따라 안전하게 휴가를 보낸다.", scores: { order: 2 } },
-                        { text: "함께 가는 사람들의 의견을 최대한 수렴하여 모두가 만족하는 휴가를 만든다.", scores: { emotion: 2 } }
-                    ]
-                },
-                {
-                    text: "오랜 시간 공들인 프로젝트가 실패로 돌아갔다...",
-                    choices: [
-                        { text: "실패의 원인을 분석하고 다음 프로젝트에 반영한다.", scores: { logic: 2 } },
-                        { text: "이럴 수도 있지' 하며 훌훌 털고 다른 새로운 도전을 찾는다.", scores: { chaos: 2 } },
-                        { text: "좌절하지만, 곧 다시 계획을 세워 재도전을 준비한다.", scores: { order: 2 } },
-                        { text: "함께 고생한 팀원들의 사기를 먼저 살핀다.", scores: { emotion: 2 } }
-                    ]
-                },
-                {
-                    text: "어떤 물건을 살 때...",
-                    choices: [
-                        { text: "가성비, 기능, 내구성을 꼼꼼히 따져보고 구매한다.", scores: { logic: 2 } },
-                        { text: "그때그때 마음에 드는 것을 바로 구매한다.", scores: { chaos: 2 } },
-                        { text: "유명 브랜드나 검증된 제품을 선호한다.", scores: { order: 2 } },
-                        { text: "주변 사람들이 좋다고 하는 것을 구매한다.", scores: { emotion: 2 } }
-                    ]
-                },
-                {
-                    text: "주말에 갑자기 계획이 비었다...",
-                    choices: [
-                        { text: "평소 미뤄뒀던 자기계발이나 공부를 한다.", scores: { logic: 2 } },
-                        { text: "즉흥적으로 친구들을 만나거나 새로운 곳으로 떠난다.", scores: { chaos: 2 } },
-                        { text: "집안일을 하거나 정해진 루틴대로 시간을 보낸다.", scores: { order: 2 } },
-                        { text: "가족이나 연인과 함께 시간을 보내려 한다.", scores: { emotion: 2 } }
-                    ]
-                },
-                {
-                    text: "팀원 중 한 명이 실수를 반복한다...",
-                    choices: [
-                        { text: "문제의 원인을 파악하고 해결을 위한 구체적인 피드백을 준다.", scores: { logic: 2 } },
-                        { text: "솔직하게 실망감을 표현하며, 변화를 요구한다.", scores: { emotion: 2 } },
-                        { text: "팀의 규칙과 절차를 다시 강조하며 준수를 요구한다.", scores: { order: 2 } },
-                        { text: "실수를 덮어주고, 나중에 만회할 기회를 준다.", scores: { chaos: 2 } }
-                    ]
-                },
-                {
-                    text: "오랫동안 연락 없던 친구에게서 갑자기 연락이 왔다...",
-                    choices: [
-                        { text: "연락 온 목적이 무엇인지 먼저 파악한다.", scores: { logic: 2 } },
-                        { text: "반가운 마음에 바로 만나자고 제안한다.", scores: { emotion: 2 } },
-                        { text: "혹시 무슨 일이 있는 건 아닐지 걱정하며 조심스럽게 대한다.", scores: { order: 2 } },
-                        { text: "무슨 말을 할지 기대하며 일단 만난다.", scores: { chaos: 2 } }
-                    ]
+                EMPATHETIC_SOUL: {
+                    title: "Empathetic Soul ❤️",
+                    description: "You are a warm mind with an exceptional ability to deeply understand and empathize with others' feelings. You prioritize human relationships and emotional harmony over rational judgment, mediating conflicts and seeking paths where everyone can be happy. Your very presence brings comfort and strength to those around you.",
+                    icon: "❤️",
+                    className: "result-emotion"
                 }
-            ]
+            },
+            questions: [] // Questions will be loaded dynamically
         }
     };
 
@@ -216,6 +121,26 @@ document.addEventListener('DOMContentLoaded', () => {
         return array;
     }
 
+    // Function to load questions from JSON
+    async function loadQuestions() {
+        try {
+            const response = await fetch('./data/questions.json');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            langData.ko.questions = data.ko;
+            langData.en.questions = data.en;
+            console.log("Questions loaded successfully from questions.json");
+        } catch (error) {
+            console.error("Error loading questions.json:", error);
+            // Fallback to empty questions or show an error message to the user
+            langData.ko.questions = [];
+            langData.en.questions = [];
+            alert("Error loading questions. Please ensure 'data/questions.json' exists and is correctly formatted.");
+        }
+    }
+
     function updateUI(lang) {
         const data = langData[lang];
         document.title = data.appTitle;
@@ -225,31 +150,30 @@ document.addEventListener('DOMContentLoaded', () => {
         if (startScreen.querySelector('h2')) startScreen.querySelector('h2').innerText = data.startScreen.h2;
         if (startScreen.querySelector('p')) startScreen.querySelector('p').innerText = data.startScreen.p;
         startBtn.innerText = data.startButton;
+        retryBtn.innerText = data.retryButton; // Update retry button for language switch
 
-        // Result Screen
-        if (resultScreen.querySelector('h2')) resultScreen.querySelector('h2').innerText = data.resultScreen.h2;
-        retryBtn.innerText = data.retryButton;
-
-        // Update current question text if on test screen
-        if (!testScreen.classList.contains('hidden')) { // If test screen is visible
-            // Re-render current question with new language
+        // If test screen is currently visible, update question and choices text
+        if (!testScreen.classList.contains('hidden')) {
             const questionData = currentTestQuestions[currentQuestionIndex];
-            if (questionData) { // Check if questionData is valid before accessing
-                questionText.innerText = questionData.text; // Update question text
+            if (questionData) { // Only update if there's a valid question
+                questionText.innerText = questionData.text;
                 progressIndicator.innerText = `${data.questionPrefix} ${currentQuestionIndex + 1} ${data.of} ${currentTestQuestions.length}`;
                 
-                // Re-render answer buttons for current question in new language
                 answerButtons.innerHTML = '';
-                questionData.choices.forEach((choice) => { // Iterate through currentTestQuestions choices
+                questionData.choices.forEach((choice) => {
                     const button = document.createElement('button');
-                    button.innerText = choice.text; // Use localized choice text
+                    button.innerText = choice.text;
                     button.classList.add('answer-btn');
-                    button.addEventListener('click', () => selectAnswer(choice)); // Pass 'choice' directly
+                    button.addEventListener('click', () => selectAnswer(choice));
                     answerButtons.appendChild(button);
                 });
             }
-        } else if (!resultScreen.classList.contains('hidden')) { // If result screen is visible
+        }
+        
+        // If result screen is currently visible, update result texts
+        if (!resultScreen.classList.contains('hidden')) {
             const finalResult = calculateResult(); // This gets localized result data
+            resultScreen.querySelector('h2').innerText = data.resultScreen.h2; // Update H2 in result
             resultTitle.innerText = finalResult.title;
             resultDescription.innerText = finalResult.description;
             resultIcon.innerText = finalResult.icon;
@@ -305,6 +229,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function generateRandomQuestions() {
         const fullQuestionPool = langData[currentLang].questions;
+        // Check if questions are loaded
+        if (!fullQuestionPool || fullQuestionPool.length === 0) {
+            console.error("Question pool is empty. Cannot generate random questions.");
+            currentTestQuestions = []; // Ensure currentTestQuestions is empty to prevent errors
+            return;
+        }
         const shuffledPool = shuffleArray([...fullQuestionPool]);
         currentTestQuestions = shuffledPool.slice(0, NUM_QUESTIONS_PER_TEST);
     }
@@ -354,19 +284,14 @@ document.addEventListener('DOMContentLoaded', () => {
     function calculateResult() {
         const finalScores = Object.entries(scores);
         if (finalScores.length === 0) {
-            // This scenario should ideally not happen if scores are always initialized.
-            // Fallback to a default result in case.
             return langData[currentLang].results.LOGIC_MASTER; 
         }
         finalScores.sort((a, b) => b[1] - a[1]);
-        const highestType = finalScores[0][0]; // This is the key 'logic', 'emotion', etc.
+        const highestType = finalScores[0][0];
 
-        // Ensure the highestType found actually exists in the results object
         if (langData[currentLang].results.hasOwnProperty(highestType)) {
             return langData[currentLang].results[highestType];
         } else {
-            // Fallback if highestType is somehow invalid (e.g., scoring error leads to non-existent key)
-            // This could happen if a score key is 'typo'd or not in results object
             return langData[currentLang].results.LOGIC_MASTER;
         }
     }
@@ -405,7 +330,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Load user preferences and hide empty ads on initial load
-    loadPreferences();
-    hideEmptyAdContainers(); // Call ad hiding function
+    // Load questions then preferences and hide empty ads on initial load
+    loadQuestions().then(() => {
+        loadPreferences();
+        hideEmptyAdContainers();
+    });
 });
