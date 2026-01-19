@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const startBtn = document.getElementById('start-btn');
     const retryBtn = document.getElementById('retry-btn');
     const mainH1 = document.querySelector('h1');
+    const saveImageBtn = document.getElementById('save-image-btn');
 
     const questionText = document.getElementById('question-text');
     const answerButtons = document.getElementById('answer-buttons');
@@ -252,6 +253,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!testScreen.classList.contains('hidden')) {
             currentQuestionIndex = 0; // Reset to the first question of the new set
             showQuestion(); 
+        } else if (!resultScreen.classList.contains('hidden')) { // If result screen is visible, re-render it for new language
+            showResult(); // Recalculate and display result with new language
         }
     }
 
@@ -762,6 +765,20 @@ document.addEventListener('DOMContentLoaded', () => {
     shareKakaoBtn.addEventListener('click', shareKakaoTalk);
     shareTwitterBtn.addEventListener('click', shareTwitter);
     shareFacebookBtn.addEventListener('click', shareFacebook);
+    // Event listener for the new "Save as Image" button
+    saveImageBtn.addEventListener('click', () => {
+        const resultScreenElement = document.getElementById('result-screen');
+        html2canvas(resultScreenElement, {
+            useCORS: true, // Important if there are images loaded from other domains
+            scale: 2,     // Increase scale for better image quality
+            logging: false // Disable logging for cleaner console
+        }).then(canvas => {
+            const link = document.createElement('a');
+            link.download = 'my_mind_type_result.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        });
+    });
 
     // --- Ad Hiding Functionality ---
     function hideEmptyAdContainers() {
