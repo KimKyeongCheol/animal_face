@@ -454,75 +454,152 @@ footer {
 }
 
 /* Mobile styles */
-@media (max-width: 768px) {
-    header {
-        padding: 0.8rem 1rem 1rem 1rem; /* Adjust header padding for mobile, making room for stacked controls */
-    }
-    h1 {
-        font-size: 1.8rem;
-        margin-top: 0.5rem; /* Space below controls when stacked */
-        text-align: center;
-        width: 100%; /* Take full width */
-    }
-    .header-controls {
-        position: static; /* Remove absolute positioning on mobile */
-        flex-direction: row; /* Keep them in a row */
-        justify-content: center;
-        width: 100%;
-        margin-bottom: 0.5rem; /* Space below controls */
-        top: auto; /* Reset top */
-        right: auto; /* Reset right */
-    }
-    #language-switcher, #theme-switcher {
-        flex-direction: row;
-        gap: 0;
-    }
-    .lang-btn {
-        padding: 5px 8px;
-        font-size: 0.75rem;
-    }
-    .theme-btn {
-        padding: 5px 8px;
-        font-size: 1rem;
-    }
+    @media (max-width: 768px) {
+        header {
+            padding: 0.8rem 1rem 1rem 1rem; /* Adjust header padding for mobile, making room for stacked controls */
+        }
+        h1 {
+            font-size: 1.8rem;
+            margin-top: 0.5rem; /* Space below controls when stacked */
+            text-align: center;
+            width: 100%; /* Take full width */
+        }
+        .header-controls {
+            position: static; /* Remove absolute positioning on mobile */
+            flex-direction: row; /* Keep them in a row */
+            justify-content: center;
+            width: 100%;
+            margin-bottom: 0.5rem; /* Space below controls */
+            top: auto; /* Reset top */
+            right: auto; /* Reset right */
+        }
+        /* Specific adjustments for smaller mobile screens (e.g., typical phone portrait) */
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.5rem; /* Smaller title on very small screens */
+            }
+            .header-controls {
+                flex-direction: column; /* Stack controls vertically on very small screens */
+                gap: 10px; /* Adjust gap for vertical stacking */
+                align-items: center; /* Center items when stacked */
+            }
+            main {
+                padding: 1rem 0.8rem; /* Reduced padding for very small screens */
+            }
+            #start-screen h2 {
+                font-size: 1.6rem;
+            }
+            #start-screen p {
+                font-size: 1rem;
+            }
+            #question-text {
+                font-size: 1.3rem;
+            }
+            .answer-btn {
+                padding: 10px 12px; /* Smaller padding for smaller buttons */
+                font-size: 0.95rem;
+            }
+            #result-screen h2 {
+                font-size: 1.3rem;
+            }
+            .result-message {
+                font-size: 1.8rem;
+            }
+            #result-description {
+                font-size: 0.85rem;
+            }
+            .pagination-btn {
+                padding: 6px 10px; /* Smaller padding for pagination buttons */
+                font-size: 0.8rem;
+                min-width: 30px;
+            }
 
-    .container {
-        flex-direction: column;
-        padding: 0; /* Remove container padding on mobile */
-    }
+            /* Admin Specific Adjustments for very small screens */
+            .admin-controls {
+                gap: 8px; /* Slightly smaller gap for very small screens */
+            }
 
-    main {
-        margin: 0.5rem auto; /* Center main horizontally */
-        padding: 1.5rem 1rem; /* Apply consistent horizontal padding to main */
-        width: calc(100% - 1rem); /* Account for padding */
-        max-width: 100%;
-        box-shadow: none;
-    }
-    
-    #question-text {
-        font-size: 1.4rem;
-    }
-    .answer-btn {
-        padding: 12px 15px;
-        font-size: 1rem;
-    }
-    #result-screen {
-        padding: 2rem 1rem;
-    }
-    .result-message {
-        font-size: 2rem;
-    }
-    #result-description {
-        font-size: 0.95rem;
-    }
-    #result-icon {
-        font-size: 4rem;
-    }
-    .ad-side-left, .ad-side-right {
-        display: none !important;
-    }
-}
-/* Secondary Results Styling */
+            #admin-question-form {
+                gap: 10px; /* Reduce gap for form sections */
+            }
+            
+            #admin-question-form h3 {
+                font-size: 1.3rem;
+            }
+
+            #admin-question-form label {
+                font-size: 0.9rem;
+            }
+
+            .dual-language-field {
+                gap: 8px; /* Smaller gap for dual language fields */
+            }
+
+            .admin-choice-item {
+                padding: 10px; /* Reduced padding for choice items */
+                gap: 8px; /* Smaller gap for elements within choice item */
+            }
+
+            .score-inputs-wrapper {
+                gap: 10px; /* Reduced gap for score inputs */
+                justify-content: space-around; /* Distribute space more evenly */
+            }
+
+            .score-input-group input[type="number"] {
+                width: 40px; /* Smaller width for score inputs */
+                padding: 3px;
+                font-size: 0.8rem;
+            }
+        }
+        #language-switcher, #theme-switcher {
+            flex-direction: row;
+            gap: 0;
+        }
+        .lang-btn {
+            padding: 5px 8px;
+            font-size: 0.75rem;
+        }
+        .theme-btn {
+            padding: 5px 8px;
+            font-size: 1rem;
+        }
+
+        .container {
+            flex-direction: column;
+            padding: 0; /* Remove container padding on mobile */
+        }
+
+        main {
+            margin: 0.5rem auto; /* Center main horizontally */
+            padding: 1.5rem 1rem; /* Apply consistent horizontal padding to main */
+            width: calc(100% - 1rem); /* Account for padding */
+            max-width: 100%;
+            box-shadow: none;
+        }
+        
+        #question-text {
+            font-size: 1.4rem;
+        }
+        .answer-btn {
+            padding: 12px 15px;
+            font-size: 1rem;
+        }
+        #result-screen {
+            padding: 2rem 1rem;
+        }
+        .result-message {
+            font-size: 2rem;
+        }
+        #result-description {
+            font-size: 0.95rem;
+        }
+        #result-icon {
+            font-size: 4rem;
+        }
+        .ad-side-left, .ad-side-right {
+            display: none !important;
+        }
+    }/* Secondary Results Styling */
 #secondary-results {
     margin-top: 2rem;
     padding-top: 1.5rem;
