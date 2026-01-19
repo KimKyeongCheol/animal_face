@@ -890,7 +890,7 @@ footer {
 
 .score-inputs-wrapper {
     display: flex;
-    gap: 5px;
+    gap: 20px; /* Increased gap for better spacing between score inputs */
     flex-wrap: wrap;
     justify-content: flex-start; /* Align to the start */
     padding-top: 5px; /* Add some space above scores */
@@ -982,13 +982,6 @@ footer {
     margin-top: 20px;
 }
 
-/* No specific media query overrides needed for stacking as default is now vertical */
-@media (min-width: 1024px) {
-    .dual-language-field {
-        flex-direction: row;
-        gap: 20px;
-    }
-}
 @media (max-width: 768px) {
     /* Existing mobile styles should largely be compatible with the new vertical layout */
     /* If specific adjustments are needed, they can be added here. */
