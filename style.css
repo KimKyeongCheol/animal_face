@@ -83,6 +83,13 @@ h1 {
     padding: 0 1rem; /* Add horizontal padding for h1 */
 }
 
+#site-logo {
+    height: 2.5rem; /* Match global h1 font-size */
+    width: auto; /* Maintain aspect ratio */
+    vertical-align: middle; /* Align with text baseline */
+    margin-right: 0.5rem; /* Space between logo and h1 */
+}
+
 /* Desktop Navigation Controls */
 #desktop-nav-controls { /* New ID for desktop controls */
     position: absolute; /* Position in top-right corner of the header */
@@ -575,6 +582,12 @@ footer {
         text-align: center; /* Center h1 on mobile */
     }
 
+    #site-logo {
+        height: 1.4rem; /* Match mobile h1 font-size */
+        margin-right: 0.3rem; /* Smaller margin for mobile */
+    }
+
+
     #desktop-nav-controls { /* Renamed from desktop-header-controls */
         display: none; /* Hide desktop controls on mobile */
     }
@@ -629,6 +642,9 @@ footer {
     @media (max-width: 480px) {
         h1 { /* Targeting global h1 for very small screens */
             font-size: 1.3rem; /* Even smaller title on very small screens */
+        }
+        #site-logo {
+            height: 1.3rem; /* Match very small screen h1 font-size */
         }
         #hamburger-menu-btn {
             font-size: 1.5rem; /* Even smaller hamburger icon */
