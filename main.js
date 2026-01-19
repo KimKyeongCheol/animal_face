@@ -30,6 +30,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const callToActionDiv = document.getElementById('call-to-action');
     const loadingIndicator = document.getElementById('loading-indicator'); // Get reference to loading indicator
 
+    const hamburgerMenuBtn = document.getElementById('hamburger-menu-btn'); // Hamburger button
+    const mobileMenuContainer = document.getElementById('mobile-menu-container'); // Mobile menu container
+
+
     const adminScreen = document.getElementById('admin-screen');
     // const adminLangKoBtn = document.getElementById('admin-lang-ko'); // Removed as this element does not exist
     // const adminLangEnBtn = document.getElementById('admin-lang-en'); // Removed as this element does not exist
@@ -663,14 +667,14 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('copy-result-btn').innerText = data.shareButtons.copyResult;
         }
 
-        // Update active language button
-        langKoBtn.classList.remove('active');
-        langEnBtn.classList.remove('active');
+        // Update active language button, considering it might be inside the mobile menu
+        document.querySelectorAll('#language-switcher .lang-btn').forEach(btn => btn.classList.remove('active'));
         if (lang === 'ko') {
-            langKoBtn.classList.add('active');
+            document.getElementById('lang-ko').classList.add('active');
         } else if (lang === 'en') {
-            langEnBtn.classList.add('active');
+            document.getElementById('lang-en').classList.add('active');
         }
+        mobileMenuContainer.classList.remove('is-open'); // Close mobile menu if open
     }
 
     function switchLanguage(lang) {
@@ -758,6 +762,7 @@ document.addEventListener('DOMContentLoaded', () => {
         resultScreen.classList.remove('result-logic', 'result-chaos', 'result-order', 'result-emotion');
         testScreen.classList.remove('hidden');
         showQuestion();
+        mobileMenuContainer.classList.remove('is-open'); // Close mobile menu when test starts
     }
 
     function showQuestion() {
@@ -1065,6 +1070,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('share-buttons').classList.remove('hidden'); // Ensure share buttons are visible
 
         drawScoreChart(fullResult.rawScores); // Draw the score chart
+        mobileMenuContainer.classList.remove('is-open'); // Close mobile menu when result is shown
     }
     
     function restartTest() {
@@ -1077,6 +1083,7 @@ document.addEventListener('DOMContentLoaded', () => {
       callToActionDiv.classList.add('hidden');
       document.getElementById('high-score-insight').classList.add('hidden'); // Hide new div
       document.getElementById('low-score-advice').classList.add('hidden');   // Hide new div
+      mobileMenuContainer.classList.remove('is-open'); // Close mobile menu when restarting test
     }
 
     // New function to draw the score chart
@@ -1196,6 +1203,7 @@ document.addEventListener('DOMContentLoaded', () => {
         callToActionDiv.classList.add('hidden');
         document.getElementById('high-score-insight').classList.add('hidden'); // Hide new div
         document.getElementById('low-score-advice').classList.add('hidden');   // Hide new div
+        mobileMenuContainer.classList.remove('is-open'); // Close mobile menu when going to start screen
     }
 
     // --- Event Listeners ---
@@ -1208,6 +1216,9 @@ document.addEventListener('DOMContentLoaded', () => {
     shareKakaoBtn.addEventListener('click', shareKakaoTalk);
     shareTwitterBtn.addEventListener('click', shareTwitter);
     shareFacebookBtn.addEventListener('click', shareFacebook);
+    hamburgerMenuBtn.addEventListener('click', () => {
+        mobileMenuContainer.classList.toggle('is-open');
+    });
     // Event listener for the new "Save as Image" button
     saveImageBtn.addEventListener('click', () => {
         const resultScreenElement = document.getElementById('result-screen');

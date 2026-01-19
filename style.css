@@ -69,12 +69,30 @@ header {
 
 /* Header Controls Styling */
 .header-controls {
-    position: absolute;
+    position: relative; /* Changed to relative to contain absolute positioned mobile menu */
     top: 1rem;
-    right: 3rem; /* Modified as requested */
-    display: flex; /* Use flexbox for horizontal arrangement */
-    gap: 8px; /* Space between control groups */
+    right: 3rem;
+    display: flex;
+    gap: 8px;
     align-items: center;
+}
+
+/* Hamburger menu button - hidden by default for desktop */
+#hamburger-menu-btn {
+    display: none; /* Hidden by default */
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: var(--text-color);
+    padding: 5px;
+    z-index: 1001; /* Ensure it's above other content */
+}
+
+/* Mobile menu container - desktop state */
+#mobile-menu-container {
+    display: flex; /* Display as flex for desktop */
+    gap: 8px; /* Maintain gap between control groups */
 }
 
 /* General styling for control groups */
@@ -454,151 +472,169 @@ footer {
 }
 
 /* Mobile styles */
-    @media (max-width: 768px) {
-        header {
-            padding: 0.8rem 1rem 1rem 1rem; /* Adjust header padding for mobile, making room for stacked controls */
-        }
-        h1 {
-            font-size: 1.8rem;
-            margin-top: 0.5rem; /* Space below controls when stacked */
-            text-align: center;
-            width: 100%; /* Take full width */
-        }
-        .header-controls {
-            position: static; /* Remove absolute positioning on mobile */
-            flex-direction: row; /* Keep them in a row */
-            justify-content: center;
-            width: 100%;
-            margin-bottom: 0.5rem; /* Space below controls */
-            top: auto; /* Reset top */
-            right: auto; /* Reset right */
-        }
-        /* Specific adjustments for smaller mobile screens (e.g., typical phone portrait) */
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 1.5rem; /* Smaller title on very small screens */
-            }
-            .header-controls {
-                flex-direction: column; /* Stack controls vertically on very small screens */
-                gap: 10px; /* Adjust gap for vertical stacking */
-                align-items: center; /* Center items when stacked */
-            }
-            main {
-                padding: 1rem 0.8rem; /* Reduced padding for very small screens */
-            }
-            #start-screen h2 {
-                font-size: 1.6rem;
-            }
-            #start-screen p {
-                font-size: 1rem;
-            }
-            #question-text {
-                font-size: 1.3rem;
-            }
-            .answer-btn {
-                padding: 10px 12px; /* Smaller padding for smaller buttons */
-                font-size: 0.95rem;
-            }
-            #result-screen h2 {
-                font-size: 1.3rem;
-            }
-            .result-message {
-                font-size: 1.8rem;
-            }
-            #result-description {
-                font-size: 0.85rem;
-            }
-            .pagination-btn {
-                padding: 6px 10px; /* Smaller padding for pagination buttons */
-                font-size: 0.8rem;
-                min-width: 30px;
-            }
 
-            /* Admin Specific Adjustments for very small screens */
-            .admin-controls {
-                gap: 8px; /* Slightly smaller gap for very small screens */
-            }
+@media (max-width: 768px) {
 
-            #admin-question-form {
-                gap: 10px; /* Reduce gap for form sections */
-            }
-            
-            #admin-question-form h3 {
-                font-size: 1.3rem;
-            }
+    header {
 
-            #admin-question-form label {
-                font-size: 0.9rem;
-            }
+        padding: 0.8rem 1rem 1rem 1rem; /* Adjust header padding for mobile, making room for stacked controls */
 
-            .dual-language-field {
-                gap: 8px; /* Smaller gap for dual language fields */
-            }
+    }
 
-            .admin-choice-item {
-                padding: 10px; /* Reduced padding for choice items */
-                gap: 8px; /* Smaller gap for elements within choice item */
-            }
+    h1 {
 
-            .score-inputs-wrapper {
-                gap: 10px; /* Reduced gap for score inputs */
-                justify-content: space-around; /* Distribute space more evenly */
-            }
+        font-size: 1.8rem;
 
-            .score-input-group input[type="number"] {
-                width: 40px; /* Smaller width for score inputs */
-                padding: 3px;
-                font-size: 0.8rem;
-            }
-        }
-        #language-switcher, #theme-switcher {
-            flex-direction: row;
-            gap: 0;
-        }
-        .lang-btn {
-            padding: 5px 8px;
-            font-size: 0.75rem;
-        }
-        .theme-btn {
-            padding: 5px 8px;
-            font-size: 1rem;
-        }
+        margin-top: 0.5rem; /* Space below controls when stacked */
 
-        .container {
-            flex-direction: column;
-            padding: 0; /* Remove container padding on mobile */
-        }
+        text-align: center;
 
-        main {
-            margin: 0.5rem auto; /* Center main horizontally */
-            padding: 1.5rem 1rem; /* Apply consistent horizontal padding to main */
-            width: calc(100% - 1rem); /* Account for padding */
-            max-width: 100%;
-            box-shadow: none;
-        }
-        
-        #question-text {
-            font-size: 1.4rem;
-        }
-        .answer-btn {
-            padding: 12px 15px;
-            font-size: 1rem;
-        }
-        #result-screen {
-            padding: 2rem 1rem;
-        }
-        .result-message {
-            font-size: 2rem;
-        }
-        #result-description {
-            font-size: 0.95rem;
-        }
-        #result-icon {
-            font-size: 4rem;
-        }
-        .ad-side-left, .ad-side-right {
-            display: none !important;
-        }
+        width: 100%; /* Take full width */
+
+    }
+
+    .header-controls {
+
+        flex-direction: column; /* Stack controls vertically on larger mobile screens as well */
+
+        position: static; /* Remove absolute positioning on mobile */
+
+        justify-content: center;
+
+        width: 100%;
+
+        margin-bottom: 0.5rem; /* Space below controls */
+
+        top: auto; /* Reset top */
+
+        right: auto; /* Reset right */
+
+        gap: 0; /* Remove gap from main header-controls on mobile */
+
+        align-items: center; /* Center horizontally */
+
+    }
+
+    #hamburger-menu-btn {
+
+        display: block; /* Show hamburger button on mobile */
+
+        order: -1; /* Place it at the top */
+
+        margin-bottom: 0.5rem; /* Space below hamburger icon */
+
+        align-self: flex-end; /* Align to the right in the header-controls */
+
+        margin-right: 1rem; /* Padding from the right edge */
+
+    }
+
+
+
+    #mobile-menu-container {
+
+        display: none; /* Hide mobile menu by default */
+
+        position: fixed;
+
+        top: 0;
+
+        left: 0;
+
+        width: 100%;
+
+        height: 100%;
+
+        background-color: var(--main-bg); /* Use main background for menu */
+
+        z-index: 999; /* Below loading indicator, above everything else */
+
+        flex-direction: column;
+
+        justify-content: center;
+
+        align-items: center;
+
+        gap: 20px; /* Space between menu items */
+
+        transition: transform 0.3s ease-in-out;
+
+        transform: translateX(100%); /* Start off-screen to the right */
+
+    }
+
+
+
+    #mobile-menu-container.is-open {
+
+        display: flex; /* Show when open */
+
+        transform: translateX(0); /* Slide in */
+
+    }
+
+
+
+    #mobile-menu-container #navigation-controls,
+
+    #mobile-menu-container #language-switcher,
+
+    #mobile-menu-container #theme-switcher {
+
+        flex-direction: column; /* Stack controls inside the menu */
+
+        border: none; /* Remove border from individual controls inside menu */
+
+        border-radius: 0; /* Remove border-radius */
+
+        width: 80%; /* Take more width inside menu */
+
+        max-width: 250px;
+
+    }
+
+
+
+    #mobile-menu-container .lang-btn,
+
+    #mobile-menu-container .theme-btn,
+
+    #mobile-menu-container #go-to-start-btn {
+
+        padding: 15px 20px; /* Larger touch targets */
+
+        font-size: 1.1rem;
+
+        width: 100%;
+
+        box-sizing: border-box; /* Include padding in width */
+
+        border-radius: 8px; /* Rounded corners for individual buttons */
+
+        margin-bottom: 5px; /* Space between items */
+
+    }
+
+
+
+    #mobile-menu-container .lang-btn:last-child,
+
+    #mobile-menu-container .theme-btn:last-child,
+
+    #mobile-menu-container #go-to-start-btn:last-child {
+
+        margin-bottom: 0;
+
+    }
+
+
+
+    #mobile-menu-container #language-switcher .lang-btn:first-child,
+
+    #mobile-menu-container #language-switcher .lang-btn:last-child {
+
+        border-radius: 8px; /* Apply border-radius to each language button within the menu */
+
     }/* Secondary Results Styling */
 #secondary-results {
     margin-top: 2rem;
