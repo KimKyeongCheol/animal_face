@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const shortSummaryDiv = document.getElementById('short-summary');
     const humorousInsightDiv = document.getElementById('humorous-insight');
     const callToActionDiv = document.getElementById('call-to-action');
+    const loadingIndicator = document.getElementById('loading-indicator'); // Get reference to loading indicator
 
     let currentQuestionIndex = 0;
     let scores = { logic: 0, emotion: 0, order: 0, chaos: 0 };
@@ -35,6 +36,25 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentTestQuestions = [];
 
     const NUM_QUESTIONS_PER_TEST = 20; // Number of questions to show per test run (increased for more robust results)
+
+    // Helper functions for loading indicator
+    function showLoading() {
+        if (loadingIndicator) {
+            loadingIndicator.classList.remove('hidden');
+            // Hide other screens while loading
+            startScreen.classList.add('hidden');
+            testScreen.classList.add('hidden');
+            resultScreen.classList.add('hidden');
+        }
+    }
+
+    function hideLoading() {
+        if (loadingIndicator) {
+            loadingIndicator.classList.add('hidden');
+            // Re-show appropriate screen after loading based on current state (e.g., start screen)
+            // This is handled by loadPreferences or startTest
+        }
+    }
 
     // --- Language Data (questions will be loaded dynamically) ---
     const langData = {
@@ -188,6 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to load questions from JSON
     async function loadQuestions() {
+        showLoading(); // Show loading indicator
         try {
             const response = await fetch('./data/questions.json');
             if (!response.ok) {
@@ -203,6 +224,8 @@ document.addEventListener('DOMContentLoaded', () => {
             langData.ko.questions = [];
             langData.en.questions = [];
             alert("Error loading questions. Please ensure 'data/questions.json' exists and is correctly formatted.");
+        } finally {
+            hideLoading(); // Hide loading indicator regardless of success or failure
         }
     }
 
