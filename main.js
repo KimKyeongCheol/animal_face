@@ -569,30 +569,58 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // New function to draw the score chart
     function drawScoreChart(scores) {
+        const canvas = document.getElementById('score-chart');
+        if (!canvas) {
+            console.error("Canvas element with ID 'score-chart' not found.");
+            return; // Exit if canvas is not found
+        }
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+            console.error("Failed to get 2D context for canvas 'score-chart'.");
+            return; // Exit if context cannot be obtained
+        }
+
         // Destroy existing chart if it exists to prevent multiple charts on the same canvas
         const existingChart = Chart.getChart("score-chart");
         if (existingChart) {
             existingChart.destroy();
         }
 
-        const ctx = document.getElementById('score-chart').getContext('2d');
+        let labels = [];
+        let chartLabel = '';
+
+        if (langData[currentLang] && langData[currentLang].results) {
+            labels = [
+                langData[currentLang].results.LOGIC_MASTER.title.split(' ')[0],
+                langData[currentLang].results.EMPATHETIC_SOUL.title.split(' ')[0],
+                langData[currentLang].results.ORDERLY_GUARDIAN.title.split(' ')[0],
+                langData[currentLang].results.CHAOTIC_AGENT.title.split(' ')[0]
+            ];
+            chartLabel = langData[currentLang].appTitle + ' ' + (currentLang === 'ko' ? '마인드 유형 점수' : 'Mind Type Scores');
+        } else {
+            console.warn("langData not fully loaded when drawing chart. Using default labels.");
+            labels = ['Logic', 'Emotion', 'Order', 'Chaos'];
+            chartLabel = 'Mind Type Scores';
+        }
+        
+        const dataValues = [
+            scores.logic,
+            scores.emotion,
+            scores.order,
+            scores.chaos
+        ];
+
+        // Determine a suitable suggestedMax for the chart scale
+        const maxScore = Math.max(...dataValues);
+        const dynamicSuggestedMax = maxScore > 0 ? maxScore + 2 : 10; // Add some padding, or default to 10 if all scores are 0
+
         new Chart(ctx, {
-            type: 'radar', // Radar chart is good for visualizing multiple variables
+            type: 'radar',
             data: {
-                labels: [
-                    langData[currentLang].results.LOGIC_MASTER.title.split(' ')[0],
-                    langData[currentLang].results.EMPATHETIC_SOUL.title.split(' ')[0],
-                    langData[currentLang].results.ORDERLY_GUARDIAN.title.split(' ')[0],
-                    langData[currentLang].results.CHAOTIC_AGENT.title.split(' ')[0]
-                ],
+                labels: labels,
                 datasets: [{
-                    label: langData[currentLang].appTitle + ' ' + (currentLang === 'ko' ? '마인드 유형 점수' : 'Mind Type Scores'),
-                    data: [
-                        scores.logic,
-                        scores.emotion,
-                        scores.order,
-                        scores.chaos
-                    ],
+                    label: chartLabel,
+                    data: dataValues,
                     backgroundColor: 'rgba(75, 192, 192, 0.4)',
                     borderColor: 'rgba(75, 192, 192, 1)',
                     borderWidth: 1
@@ -600,21 +628,21 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: false, // Allow canvas to resize freely
+                maintainAspectRatio: false,
                 scales: {
                     r: {
                         angleLines: {
                             display: true
                         },
                         suggestedMin: 0,
-                        suggestedMax: 10, // Assuming scores range from 0 to 10 or similar
+                        suggestedMax: dynamicSuggestedMax, // Use dynamic max
                         pointLabels: {
                             font: {
-                                size: 14 // Adjust font size for labels
+                                size: 14
                             }
                         },
                         ticks: {
-                            display: false // Hide ticks for cleaner look
+                            display: false
                         }
                     }
                 },
