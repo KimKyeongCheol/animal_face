@@ -9,11 +9,10 @@
 <body>
     <header>
         <div class="ad-top"></div>
-        <div id="mobile-header-top-bar">
-            <h1>LOGIC-TREE</h1>
-            <button id="hamburger-menu-btn" class="menu-icon">☰</button> <!-- Hamburger icon -->
-        </div>
-        <div id="desktop-header-controls">
+        <h1>LOGIC-TREE</h1> <!-- Site title, always visible -->
+        <button id="hamburger-menu-btn" class="menu-icon">☰</button> <!-- Hamburger icon -->
+        
+        <div id="desktop-nav-controls"> <!-- Desktop navigation container -->
             <div id="navigation-controls">
                 <button id="go-to-start-btn" class="nav-btn">🏠</button>
             </div>
@@ -22,11 +21,12 @@
                 <button id="lang-en" class="lang-btn">English</button>
             </div>
             <div id="theme-switcher">
-                <button id="theme-toggle" class="theme-btn">☀️</button> <!-- Light mode by default -->
+                <button id="theme-toggle" class="theme-btn">☀️</button>
             </div>
         </div>
-        <!-- Mobile Overlay Menu (duplicates desktop controls for full-screen overlay) -->
-        <div id="mobile-menu-overlay">
+
+        <div id="mobile-full-screen-menu"> <!-- Mobile full-screen menu overlay -->
+            <button id="mobile-menu-close-btn" class="menu-icon">✕</button> <!-- New close button for overlay -->
             <div id="navigation-controls-mobile">
                 <button id="go-to-start-btn-mobile" class="nav-btn">🏠</button>
             </div>
@@ -35,7 +35,7 @@
                 <button id="lang-en-mobile" class="lang-btn">English</button>
             </div>
             <div id="theme-switcher-mobile">
-                <button id="theme-toggle-mobile" class="theme-btn">☀️</button> <!-- Light mode by default -->
+                <button id="theme-toggle-mobile" class="theme-btn">☀️</button>
             </div>
         </div>
     </header>

@@ -31,10 +31,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const loadingIndicator = document.getElementById('loading-indicator'); // Get reference to loading indicator
 
     const hamburgerMenuBtn = document.getElementById('hamburger-menu-btn'); // Hamburger button
-    const desktopHeaderControls = document.getElementById('desktop-header-controls'); // Desktop menu container
-    const mobileMenuOverlay = document.getElementById('mobile-menu-overlay'); // Mobile full-screen menu overlay
+    const desktopNavControls = document.getElementById('desktop-nav-controls'); // Desktop navigation container
+    const mobileFullScreenMenu = document.getElementById('mobile-full-screen-menu'); // Mobile full-screen menu overlay
+    const mobileMenuCloseBtn = document.getElementById('mobile-menu-close-btn'); // Mobile menu close button
 
-    // Mobile specific controls (inside mobileMenuOverlay)
+    // Mobile specific controls (inside mobileFullScreenMenu)
     const goHomeBtnMobile = document.getElementById('go-to-start-btn-mobile');
     const langKoBtnMobile = document.getElementById('lang-ko-mobile');
     const langEnBtnMobile = document.getElementById('lang-en-mobile');
@@ -351,9 +352,9 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         // First button
-        adminPaginationControls.appendChild(createButton('맨 앞', 1, currentPageAdmin === 1));
+        adminPaginationControls.appendChild(createButton('<<', 1, currentPageAdmin === 1));
         // Previous button
-        adminPaginationControls.appendChild(createButton('이전', currentPageAdmin - 1, currentPageAdmin === 1));
+        adminPaginationControls.appendChild(createButton('<', currentPageAdmin - 1, currentPageAdmin === 1));
 
         // Page numbers
         let startPage = Math.max(1, currentPageAdmin - 2);
@@ -374,9 +375,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Next button
-        adminPaginationControls.appendChild(createButton('다음', currentPageAdmin + 1, currentPageAdmin === totalPages));
+        adminPaginationControls.appendChild(createButton('>', currentPageAdmin + 1, currentPageAdmin === totalPages));
         // Last button
-        adminPaginationControls.appendChild(createButton('맨 끝', totalPages, currentPageAdmin === totalPages));
+        adminPaginationControls.appendChild(createButton('>>', totalPages, currentPageAdmin === totalPages));
     }
 
     function goToAdminPage(page) {
@@ -682,7 +683,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('lang-en').classList.add('active');
             document.getElementById('lang-en-mobile').classList.add('active');
         }
-        mobileMenuOverlay.classList.remove('is-open'); // Close mobile menu if open
+        mobileFullScreenMenu.classList.remove('is-open'); // Close mobile menu if open
     }
 
     function switchLanguage(lang) {
@@ -773,7 +774,7 @@ document.addEventListener('DOMContentLoaded', () => {
         resultScreen.classList.remove('result-logic', 'result-chaos', 'result-order', 'result-emotion');
         testScreen.classList.remove('hidden');
         showQuestion();
-        mobileMenuOverlay.classList.remove('is-open'); // Close mobile menu when test starts
+        mobileFullScreenMenu.classList.remove('is-open'); // Close mobile menu when test starts
     }
 
     function showQuestion() {
@@ -1081,7 +1082,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('share-buttons').classList.remove('hidden'); // Ensure share buttons are visible
 
         drawScoreChart(fullResult.rawScores); // Draw the score chart
-        mobileMenuOverlay.classList.remove('is-open'); // Close mobile menu when result is shown
+        mobileFullScreenMenu.classList.remove('is-open'); // Close mobile menu when result is shown
     }
     
     function restartTest() {
@@ -1094,7 +1095,7 @@ document.addEventListener('DOMContentLoaded', () => {
       callToActionDiv.classList.add('hidden');
       document.getElementById('high-score-insight').classList.add('hidden'); // Hide new div
       document.getElementById('low-score-advice').classList.add('hidden');   // Hide new div
-      mobileMenuOverlay.classList.remove('is-open'); // Close mobile menu when restarting test
+      mobileFullScreenMenu.classList.remove('is-open'); // Close mobile menu when restarting test
     }
 
     // New function to draw the score chart
@@ -1214,7 +1215,7 @@ document.addEventListener('DOMContentLoaded', () => {
         callToActionDiv.classList.add('hidden');
         document.getElementById('high-score-insight').classList.add('hidden'); // Hide new div
         document.getElementById('low-score-advice').classList.add('hidden');   // Hide new div
-        mobileMenuOverlay.classList.remove('is-open'); // Close mobile menu when going to start screen
+        mobileFullScreenMenu.classList.remove('is-open'); // Close mobile menu when going to start screen
     }
 
     // --- Event Listeners ---
@@ -1228,14 +1229,25 @@ document.addEventListener('DOMContentLoaded', () => {
     shareTwitterBtn.addEventListener('click', shareTwitter);
     shareFacebookBtn.addEventListener('click', shareFacebook);
     hamburgerMenuBtn.addEventListener('click', () => {
-        mobileMenuOverlay.classList.toggle('is-open');
+        mobileFullScreenMenu.classList.toggle('is-open');
+        // Toggle hamburger icon between '☰' and '✕'
+        if (mobileFullScreenMenu.classList.contains('is-open')) {
+            hamburgerMenuBtn.innerText = '✕';
+        } else {
+            hamburgerMenuBtn.innerText = '☰';
+        }
+    });
+
+    mobileMenuCloseBtn.addEventListener('click', () => {
+        mobileFullScreenMenu.classList.remove('is-open');
+        hamburgerMenuBtn.innerText = '☰'; // Reset hamburger icon when closed by 'X' button
     });
 
     // Mobile menu specific listeners
-    goHomeBtnMobile.addEventListener('click', () => { goToStartScreen(); mobileMenuOverlay.classList.remove('is-open'); });
-    langKoBtnMobile.addEventListener('click', () => { switchLanguage('ko'); mobileMenuOverlay.classList.remove('is-open'); });
-    langEnBtnMobile.addEventListener('click', () => { switchLanguage('en'); mobileMenuOverlay.classList.remove('is-open'); });
-    themeToggleBtnMobile.addEventListener('click', () => { toggleTheme(); mobileMenuOverlay.classList.remove('is-open'); });
+    goHomeBtnMobile.addEventListener('click', () => { goToStartScreen(); mobileFullScreenMenu.classList.remove('is-open'); });
+    langKoBtnMobile.addEventListener('click', () => { switchLanguage('ko'); mobileFullScreenMenu.classList.remove('is-open'); });
+    langEnBtnMobile.addEventListener('click', () => { switchLanguage('en'); mobileFullScreenMenu.classList.remove('is-open'); });
+    themeToggleBtnMobile.addEventListener('click', () => { toggleTheme(); mobileFullScreenMenu.classList.remove('is-open'); });
     // Event listener for the new "Save as Image" button
     saveImageBtn.addEventListener('click', () => {
         const resultScreenElement = document.getElementById('result-screen');

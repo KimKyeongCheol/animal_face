@@ -44,6 +44,11 @@ body.dark-mode {
     --result-card-bg: #343a40;
 }
 
+/* Universal box-sizing for consistent layout */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     display: flex;
@@ -59,27 +64,27 @@ body {
 
 header {
     background-color: var(--header-bg);
-    padding: 1rem 2rem;
-    text-align: center;
+    padding: 1rem 2rem; /* Keep desktop padding for overall header height */
+    text-align: center; /* Still center text within header if not flex item */
     width: 100%;
     box-shadow: 0 4px 10px var(--box-shadow-light);
     margin-bottom: 1rem;
     position: relative; /* Keep relative for absolute children */
-    display: flex;
-    flex-direction: column; /* Default to stacking on desktop (main heading, then controls) */
-    align-items: center;
+    display: flex; /* Make header a flex container */
+    justify-content: space-between; /* Space out h1 and other controls */
+    align-items: center; /* Vertically align items */
 }
 
 h1 {
     margin: 0;
     color: var(--primary-color);
-    font-size: 2.5rem; /* Revert to original desktop size */
+    font-size: 2.5rem; /* Original desktop size */
     font-weight: 700;
-    padding: 0.5rem 0;
+    padding: 0 1rem; /* Add horizontal padding for h1 */
 }
 
-/* Desktop Header Controls */
-#desktop-header-controls {
+/* Desktop Navigation Controls */
+#desktop-nav-controls { /* New ID for desktop controls */
     position: absolute; /* Position in top-right corner of the header */
     top: 1rem;
     right: 3rem;
@@ -88,14 +93,11 @@ h1 {
     align-items: center; /* Vertically align items */
 }
 
-/* Mobile Header Top Bar (h1 + hamburger) - hidden by default on desktop */
-#mobile-header-top-bar {
-    display: none; /* Hidden by default on desktop */
-}
+/* Mobile Header Top Bar (no longer exists as separate div, h1 and hamburger are direct children of header) */
 
 /* Hamburger menu button - hidden by default for desktop */
 #hamburger-menu-btn {
-    display: none; /* Hidden by default on desktop */
+    display: none; /* Hidden by default on desktop, shown on mobile */
     background: none;
     border: none;
     font-size: 2rem;
@@ -105,9 +107,9 @@ h1 {
     z-index: 1001; /* Ensure it's above other content */
 }
 
-/* Mobile Overlay Menu - hidden by default on desktop */
-#mobile-menu-overlay {
-    display: none; /* Hidden by default on desktop */
+/* Mobile Full Screen Menu Overlay - hidden by default on desktop */
+#mobile-full-screen-menu {
+    display: none; /* Hidden by default on desktop, shown on mobile when triggered */
     position: fixed;
     top: 0;
     left: 0;
@@ -123,15 +125,29 @@ h1 {
     transform: translateX(100%);
 }
 
-#mobile-menu-overlay.is-open {
+#mobile-full-screen-menu.is-open {
     display: flex;
     transform: translateX(0);
 }
 
+#mobile-menu-close-btn { /* New close button styling */
+    display: none; /* Hidden by default on desktop */
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 2.5rem;
+    cursor: pointer;
+    color: var(--text-color);
+    z-index: 1002; /* Ensure it's above the menu content */
+    padding: 5px;
+}
 
-#mobile-menu-overlay #navigation-controls-mobile,
-#mobile-menu-overlay #language-switcher-mobile,
-#mobile-menu-overlay #theme-switcher-mobile {
+
+#mobile-full-screen-menu #navigation-controls-mobile,
+#mobile-full-screen-menu #language-switcher-mobile,
+#mobile-full-screen-menu #theme-switcher-mobile {
     flex-direction: column; /* Stack controls inside the menu */
     border: none; /* Remove border from individual controls inside menu */
     border-radius: 0; /* Remove border-radius */
@@ -139,9 +155,9 @@ h1 {
     max-width: 250px;
 }
 
-#mobile-menu-overlay .lang-btn,
-#mobile-menu-overlay .theme-btn,
-#mobile-menu-overlay #go-to-start-btn-mobile {
+#mobile-full-screen-menu .lang-btn,
+#mobile-full-screen-menu .theme-btn,
+#mobile-full-screen-menu #go-to-start-btn-mobile {
     padding: 15px 20px; /* Larger touch targets */
     font-size: 1.1rem;
     width: 100%;
@@ -150,15 +166,20 @@ h1 {
     margin-bottom: 5px; /* Space between items */
 }
 
-#mobile-menu-overlay .lang-btn:last-child,
-#mobile-menu-overlay .theme-btn:last-child,
-#mobile-menu-overlay #go-to-start-btn-mobile:last-child {
+#mobile-full-screen-menu .lang-btn:last-child,
+#mobile-full-screen-menu .theme-btn:last-child,
+#mobile-full-screen-menu #go-to-start-btn-mobile:last-child {
     margin-bottom: 0;
 }
 
-#mobile-menu-overlay #language-switcher-mobile .lang-btn:first-child,
-#mobile-menu-overlay #language-switcher-mobile .lang-btn:last-child {
+#mobile-full-screen-menu #language-switcher-mobile .lang-btn:first-child,
+#mobile-full-screen-menu #language-switcher-mobile .lang-btn:last-child {
     border-radius: 8px; /* Apply border-radius to each language button within the menu */
+}
+
+/* Show close button when mobile menu is open */
+#mobile-full-screen-menu.is-open #mobile-menu-close-btn {
+    display: block;
 }
 
 /* Styling for the new Home button */
@@ -486,15 +507,19 @@ footer {
 .try-again-btn {
     background-color: var(--primary-color);
     color: white;
-    padding: 15px 30px;
+    padding: 15px 20px; /* Adjusted to match share-btn padding */
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    font-size: 1.1rem;
+    font-size: 1rem; /* Adjusted to match share-btn font-size */
     font-weight: 600;
     transition: background-color 0.3s ease, transform 0.2s ease;
     margin-top: 1rem;
     box-shadow: 0 3px 8px var(--box-shadow-medium);
+    /* Added to match share-btn size and allow centering */
+    width: 100%;
+    max-width: 180px;
+    margin: 1rem auto; /* Center the button */
 }
 
 .try-again-btn:hover {
@@ -535,53 +560,74 @@ footer {
 
 @media (max-width: 768px) {
     header {
-        padding: 0; /* Header padding controlled by children on mobile */
-        flex-direction: column; /* Ensure main header content and overlay are stacked */
+        padding: 0.3rem 1rem; /* Reduced padding for mobile header height */
+        display: flex;
+        justify-content: space-between; /* Space out h1 and hamburger button */
         align-items: center;
+        flex-direction: row; /* Ensure h1 and hamburger are in a row */
     }
     
-    h1 { /* Global h1 will be overridden by #mobile-header-top-bar h1 */
-        font-size: 1.6rem; /* Default mobile H1 size, will be overridden */
-        margin-top: 0;
+    h1 {
+        font-size: 1.4rem; /* Reduced default mobile H1 size */
+        margin: 0;
         padding: 0;
+        flex-grow: 1; /* Allow h1 to take available space */
+        text-align: center; /* Center h1 on mobile */
     }
 
-    #desktop-header-controls {
+    #desktop-nav-controls { /* Renamed from desktop-header-controls */
         display: none; /* Hide desktop controls on mobile */
     }
 
-    #mobile-header-top-bar {
-        display: flex; /* Show mobile top bar */
-        justify-content: space-between; /* Space out title and hamburger */
-        align-items: center;
-        width: 100%;
-        padding: 0.3rem 0.8rem; /* Further reduced padding for mobile header height */
-        box-shadow: 0 2px 5px var(--box-shadow-light); /* Lighter shadow for mobile header */
-        background-color: var(--header-bg); /* Use header background */
-        position: sticky; /* Keep top bar visible when scrolling */
-        top: 0;
-        z-index: 100; /* Ensure it's above content */
-    }
-
-    #mobile-header-top-bar h1 {
-        font-size: 1.4rem; /* Reduced title size within mobile top bar */
-        margin: 0; /* Remove margin */
-        padding: 0; /* Remove padding */
-        flex-grow: 1; /* Allow h1 to take available space */
-        text-align: left; /* Align title to the left */
+    #mobile-header-top-bar { /* This div is no longer in HTML */
+        display: none;
     }
 
     #hamburger-menu-btn {
         display: block; /* Show hamburger button on mobile */
-        font-size: 1.6rem; /* Reduced hamburger icon size */
-        margin-right: 0; /* Adjust margin if needed */
-        align-self: center; /* Center vertically within flex container */
-        order: 1; /* Place it after h1 */
+        font-size: 1.6rem; /* Slightly smaller hamburger icon */
+        margin: 0; /* Remove any default margins */
+        padding: 5px; /* Adjust padding for touch target */
+        position: static; /* Position normally within the flex container */
     }
 
+    /* Adjusting controls inside the mobile overlay menu */
+    #mobile-full-screen-menu #navigation-controls-mobile,
+    #mobile-full-screen-menu #language-switcher-mobile,
+    #mobile-full-screen-menu #theme-switcher-mobile {
+        flex-direction: column;
+        border: none;
+        border-radius: 0;
+        width: 80%;
+        max-width: 250px;
+        gap: 8px; /* Added gap between internal controls */
+    }
+
+    #mobile-full-screen-menu .lang-btn,
+    #mobile-full-screen-menu .theme-btn,
+    #mobile-full-screen-menu #go-to-start-btn-mobile {
+        padding: 12px 15px; /* Slightly smaller touch targets for menu items */
+        font-size: 1rem; /* Slightly smaller font for menu items */
+        width: 100%;
+        box-sizing: border-box;
+        border-radius: 8px;
+        margin-bottom: 5px;
+    }
+
+    #mobile-full-screen-menu .lang-btn:last-child,
+    #mobile-full-screen-menu .theme-btn:last-child,
+    #mobile-full-screen-menu #go-to-start-btn-mobile:last-child {
+        margin-bottom: 0;
+    }
+
+    #mobile-full-screen-menu #language-switcher-mobile .lang-btn:first-child,
+    #mobile-full-screen-menu #language-switcher-mobile .lang-btn:last-child {
+        border-radius: 8px; /* Apply border-radius to each language button within the menu */
+    }
+    
     /* Existing nested media query for very small screens */
     @media (max-width: 480px) {
-        #mobile-header-top-bar h1 {
+        h1 { /* Targeting global h1 for very small screens */
             font-size: 1.3rem; /* Even smaller title on very small screens */
         }
         #hamburger-menu-btn {
@@ -644,45 +690,6 @@ footer {
             padding: 2px;
             font-size: 0.7rem;
         }
-    }
-
-    /* Old header-controls styling is removed/overridden as structure changed */
-    .header-controls {
-        display: none; /* Hide the old header-controls div on mobile completely */
-    }
-
-    /* Adjusting controls inside the mobile overlay menu */
-    #mobile-menu-overlay #navigation-controls-mobile,
-    #mobile-menu-overlay #language-switcher-mobile,
-    #mobile-menu-overlay #theme-switcher-mobile {
-        flex-direction: column;
-        border: none;
-        border-radius: 0;
-        width: 80%;
-        max-width: 250px;
-        gap: 8px; /* Added gap between internal controls */
-    }
-
-    #mobile-menu-overlay .lang-btn,
-    #mobile-menu-overlay .theme-btn,
-    #mobile-menu-overlay #go-to-start-btn-mobile {
-        padding: 12px 15px; /* Slightly smaller touch targets for menu items */
-        font-size: 1rem; /* Slightly smaller font for menu items */
-        width: 100%;
-        box-sizing: border-box;
-        border-radius: 8px;
-        margin-bottom: 5px;
-    }
-
-    #mobile-menu-overlay .lang-btn:last-child,
-    #mobile-menu-overlay .theme-btn:last-child,
-    #mobile-menu-overlay #go-to-start-btn-mobile:last-child {
-        margin-bottom: 0;
-    }
-
-    #mobile-menu-overlay #language-switcher-mobile .lang-btn:first-child,
-    #mobile-menu-overlay #language-switcher-mobile .lang-btn:last-child {
-        border-radius: 8px; /* Apply border-radius to each language button within the menu */
     }
 }/* Secondary Results Styling */
 #secondary-results {
@@ -1181,6 +1188,18 @@ footer {
     justify-content: center;
     gap: 15px;
     margin-top: 20px;
+}
+
+/* Admin Cancel Button Specifics */
+#admin-cancel-edit-btn {
+    background-color: var(--ad-bg); /* Use a neutral background color */
+    color: var(--text-color); /* Use standard text color */
+    border: 1px solid var(--ad-border); /* Add a subtle border */
+}
+
+#admin-cancel-edit-btn:hover {
+    background-color: var(--ad-border); /* Darken on hover */
+    color: var(--text-color);
 }
 
 @media (max-width: 768px) {
