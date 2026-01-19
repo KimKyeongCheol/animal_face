@@ -1212,3 +1212,19 @@ footer {
     /* If specific adjustments are needed, they can be added here. */
 }
 
+footer nav {
+    margin-top: 10px;
+}
+
+footer nav a {
+    color: var(--text-color);
+    text-decoration: none;
+    margin: 0 8px;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+footer nav a:hover {
+    color: var(--primary-color);
+    text-decoration: underline;
+}
