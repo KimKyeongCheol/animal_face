@@ -57,7 +57,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     humorousInsight: "당신에게 '직감'이란, 아직 데이터로 증명되지 않은 '가설'일 뿐! 😂 사랑도, 우정도, 효율성이 우선인 당신, 가끔은 머리 말고 가슴이 시키는 일을 해보는 건 어때요?",
                     callToAction: "당신의 비범한 논리력을 세상에 보여주세요! 이 결과를 공유하고, 친구들의 마인드 유형도 분석해보세요!",
                     icon: "🧠",
-                    className: "result-logic"
+                    className: "result-logic",
+                    highScoreSnippet: "당신의 논리력은 타의 추종을 불허합니다. 어떤 문제든 명쾌하게 분석하고 해결하는 데 뛰어납니다.",
+                    lowScoreSnippet: "때로는 차가운 논리보다는 따뜻한 마음이 필요할 때도 있습니다. 감성적인 접근을 시도해 보세요."
                 },
                 CHAOTIC_AGENT: {
                     title: "혼돈의 에이전트 🌪️",
@@ -66,7 +68,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     humorousInsight: "당신의 가방 속은 마치 우주와 같죠? 어디서 뭐가 튀어나올지 아무도 모릅니다! 계획은 즉흥적으로 세워야 제맛이라는 당신, 예상치 못한 곳에서 인생의 해답을 찾기도 합니다.",
                     callToAction: "세상은 당신의 혼돈을 기다립니다! 당신의 독특한 마인드 유형을 공유하고, 친구들에게 신선한 충격을 선사하세요!",
                     icon: "🌪️",
-                    className: "result-chaos"
+                    className: "result-chaos",
+                    highScoreSnippet: "당신의 예측 불가능한 에너지와 창의력은 새로운 가능성을 열어줍니다. 틀에 얽매이지 않는 자유로운 사고가 강점입니다.",
+                    lowScoreSnippet: "가끔은 예측 가능한 질서 속에서 안정감을 찾는 것도 필요합니다. 계획적인 접근을 시도해 보세요."
                 },
                 ORDERLY_GUARDIAN: {
                     title: "질서의 수호자 🛡️",
@@ -75,7 +79,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     humorousInsight: "당신은 약속 시간에 늦는 법이 없죠? 심지어 '미리 가서 기다리는' 유형! 계획에 없던 서프라이즈는 당신을 혼란스럽게 하지만, 당신의 질서는 모두에게 안도감을 줍니다. 가끔은 '무계획'도 계획의 일부라고 생각해보는 건 어때요?",
                     callToAction: "안정과 조화의 아이콘! 당신의 질서정연한 마인드를 공유하고, 친구들의 혼란스러운 세상을 구원해주세요!",
                     icon: "🛡️",
-                    className: "result-order"
+                    className: "result-order",
+                    highScoreSnippet: "당신은 안정과 조화를 최우선으로 생각하며, 뛰어난 책임감으로 모든 것을 체계적으로 관리합니다. 주변에 평온을 가져다주는 존재입니다.",
+                    lowScoreSnippet: "때로는 정해진 틀을 벗어나 새로운 시도를 해보는 것도 좋습니다. 예상 밖의 즐거움을 찾아보세요."
                 },
                 EMPATHETIC_SOUL: {
                     title: "공감적 중재자 ❤️",
@@ -84,7 +90,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     humorousInsight: "누군가 힘들어하면 당신의 지갑은 자동으로 열리고, 친구의 고민은 밤새도록 들어주는 당신! 😂 가끔은 나 자신을 먼저 챙기는 것도 중요해요. 타인의 감정 쓰레기통이 되지는 마시길!",
                     callToAction: "세상에 따뜻한 위로가 필요한가요? 당신의 공감 가득한 마인드를 공유하고, 지친 이들에게 힘을 불어넣어 주세요!",
                     icon: "❤️",
-                    className: "result-emotion"
+                    className: "result-emotion",
+                    highScoreSnippet: "타인의 감정을 깊이 이해하고 공감하는 능력은 당신의 가장 큰 장점입니다. 주변 사람들에게 큰 위로와 힘이 됩니다.",
+                    lowScoreSnippet: "때로는 타인의 감정에 너무 휩쓸리지 않고, 객관적인 시각을 유지하는 것이 중요합니다."
                 }
             },
             questions: [] // Questions will be loaded dynamically
@@ -110,7 +118,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     humorousInsight: "For you, 'gut feeling' is just a 'hypothesis' yet to be proven by data! 😂 Efficiency is key in love and friendship. Ever tried listening to your heart, not just your head?",
                     callToAction: "Unleash your extraordinary logic on the world! Share your results and analyze your friends' mind types too!",
                     icon: "🧠",
-                    className: "result-logic"
+                    className: "result-logic",
+                    highScoreSnippet: "Your exceptional logic allows you to analyze and solve any problem with clarity. You are a master of rational thought.",
+                    lowScoreSnippet: "Sometimes, a warm heart is needed more than cold logic. Try to approach situations with more empathy."
                 },
                 CHAOTIC_AGENT: {
                     title: "Chaotic Agent 🌪️",
@@ -119,7 +129,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     humorousInsight: "Your bag is like a universe, you never know what'll pop out! 😂 For you, plans are best made spontaneously. You often find life's answers in unexpected places.",
                     callToAction: "The world awaits your beautiful chaos! Share your unique mind type and shock your friends with a dose of fresh perspective!",
                     icon: "🌪️",
-                    className: "result-chaos"
+                    className: "result-chaos",
+                    highScoreSnippet: "Your unpredictable energy and creativity open up new possibilities. Your strength lies in thinking outside the box.",
+                    lowScoreSnippet: "Sometimes finding stability within a structured order can be beneficial. Try a more planned approach occasionally."
                 },
                 ORDERLY_GUARDIAN: {
                     title: "Orderly Guardian 🛡️",
@@ -128,7 +140,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     humorousInsight: "You're never late, are you? In fact, you're the 'early bird' type! Unexpected surprises throw you off, but your order brings relief to all. Perhaps 'no plan' can also be a plan?",
                     callToAction: "Icon of stability and harmony! Share your orderly mind and bring salvation to your friends' chaotic worlds!",
                     icon: "🛡️",
-                    className: "result-order"
+                    className: "result-order",
+                    highScoreSnippet: "You prioritize stability and harmony, managing everything systematically with a strong sense of responsibility. You bring peace to those around you.",
+                    lowScoreSnippet: "Sometimes stepping outside the established framework and trying new things can be beneficial. Discover unexpected joys."
                 },
                 EMPATHETIC_SOUL: {
                     title: "Empathetic Soul ❤️",
@@ -137,7 +151,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     humorousInsight: "When someone's struggling, your wallet opens automatically, and you'll listen to a friend's worries all night! 😂 Remember to take care of yourself first. Don't be a human emotional dumpster!",
                     callToAction: "Is the world in need of warm solace? Share your empathetic mind and empower those who are weary!",
                     icon: "❤️",
-                    className: "result-emotion"
+                    className: "result-emotion",
+                    highScoreSnippet: "Your exceptional ability to deeply understand and empathize with others is your greatest strength. You bring comfort and strength to those around you.",
+                    lowScoreSnippet: "Sometimes it's important to not get too carried away by others' emotions and maintain an objective perspective."
                 }
             },
             questions: [] // Questions will be loaded dynamically
@@ -358,12 +374,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     className: "result-default"
                 },
                 secondary: [], // No secondary results if no answers
-                rawScores: scores // Include raw scores for debugging
+                rawScores: scores, // Include raw scores for debugging
+                lowestScoreTypeKey: null // No meaningful lowest score if all are zero
             };
         }
 
-        finalScores.sort((a, b) => b[1] - a[1]); // Sorts descending by score value
-        console.log("finalScores after sort:", finalScores);
+        // Sort by score descending for primary and secondary
+        finalScores.sort((a, b) => b[1] - a[1]);
+        console.log("finalScores after descending sort:", finalScores);
 
         // Determine primary result
         const highestScore = finalScores[0][1];
@@ -382,17 +400,15 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("Primary type determined:", primaryTypeKey);
         console.log("Mapped primary result key:", primaryResultKey);
 
-        // Determine secondary results
+        // Determine secondary results (same logic as before)
         const secondaryResults = [];
         for (let i = 0; i < finalScores.length; i++) {
             const [type, score] = finalScores[i];
-            // Include secondary results if their score is non-zero, not the primary type,
-            // and their score is close to the highest (e.g., highest - 2 points) or just top N
-            if (score > 0 && type !== primaryTypeKey && secondaryResults.length < 2) { // Limit to top 2 secondary results
+            if (score > 0 && type !== primaryTypeKey && secondaryResults.length < 2) {
                 const secondaryResultKey = typeKeyToResultKey[type];
                 if (langData[currentLang].results.hasOwnProperty(secondaryResultKey)) {
                     secondaryResults.push({
-                        type: type, // e.g., 'emotion'
+                        type: type,
                         score: score,
                         data: langData[currentLang].results[secondaryResultKey]
                     });
@@ -401,10 +417,32 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         console.log("Secondary results:", secondaryResults);
 
+        // Determine lowest score type for non-primary types
+        let lowestScore = Infinity;
+        let lowestScoreRawKey = null; // Store the raw key ('logic', 'emotion' etc.)
+
+        for (const type in scores) {
+            if (scores.hasOwnProperty(type) && type !== primaryTypeKey) { // Exclude primary type from lowest score advice
+                if (scores[type] < lowestScore) {
+                    lowestScore = scores[type];
+                    lowestScoreRawKey = type;
+                }
+            }
+        }
+        
+        const lowestScoreTypeKey = lowestScoreRawKey ? typeKeyToResultKey[lowestScoreRawKey] : null;
+
+        // Fallback if no distinct lowest non-primary score type is found
+        if (lowestScoreTypeKey === null && Object.keys(scores).length > 1) { // If there are other types but no clear lowest
+             console.warn("Could not determine a distinct lowest non-primary score type. Lowest score advice might not be shown.");
+        }
+
+
         return {
             primary: primaryResultData,
             secondary: secondaryResults,
-            rawScores: scores // Include raw scores for debugging/future use
+            rawScores: scores, // Include raw scores for debugging/future use
+            lowestScoreTypeKey: lowestScoreTypeKey // e.g., 'EMPATHETIC_SOUL'
         };
     }
 
@@ -498,17 +536,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Clear previous results
         resultTitle.innerText = '';
-        resultDescription.innerText = '';
         resultIcon.innerText = '';
         resultScreen.classList.remove('result-logic', 'result-chaos', 'result-order', 'result-emotion', 'result-default');
 
+        // Clear and hide new dynamic text fields
+        const highScoreInsightDiv = document.getElementById('high-score-insight');
+        const lowScoreAdviceDiv = document.getElementById('low-score-advice');
+        
+        highScoreInsightDiv.innerText = '';
+        lowScoreAdviceDiv.innerText = '';
+        highScoreInsightDiv.classList.add('hidden');
+        lowScoreAdviceDiv.classList.add('hidden');
+
+
         // Display Primary Result
         resultTitle.innerText = fullResult.primary.title;
-        resultDescription.innerText = fullResult.primary.description;
+        resultDescription.innerText = fullResult.primary.description; // Keep the original full description
         resultIcon.innerText = fullResult.primary.icon;
         resultScreen.classList.add(fullResult.primary.className);
 
-        // Display Secondary Results
+        // Display high score snippet
+        if (fullResult.primary.highScoreSnippet) {
+            highScoreInsightDiv.innerText = fullResult.primary.highScoreSnippet;
+            highScoreInsightDiv.classList.remove('hidden');
+        }
+
+        // Display low score advice
+        if (fullResult.lowestScoreTypeKey && langData[currentLang].results[fullResult.lowestScoreTypeKey] && langData[currentLang].results[fullResult.lowestScoreTypeKey].lowScoreSnippet) {
+            const lowestTypeData = langData[currentLang].results[fullResult.lowestScoreTypeKey];
+            lowScoreAdviceDiv.innerText = lowestTypeData.lowScoreSnippet;
+            lowScoreAdviceDiv.classList.remove('hidden');
+        }
+
+
+        // Display Secondary Results (existing logic)
         const secondaryResultsDiv = document.getElementById('secondary-results');
         secondaryResultsDiv.innerHTML = ''; // Clear previous secondary results
 
@@ -525,14 +586,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 p.innerHTML = `${secondary.data.icon} <strong>${secondary.data.title}</strong> (${secondary.score} ${currentLang === 'ko' ? '점' : 'pts'})`;
                 secondaryResultsDiv.appendChild(p);
             });
-        } else if (!fullResult.primary.className.includes('result-default')) { // Only if not already showing generic msg
+        } else if (!fullResult.primary.className.includes('result-default')) {
              const p = document.createElement('p');
              p.classList.add('secondary-result-item');
              p.innerText = currentLang === 'ko' ? "다른 특출난 성향은 발견되지 않았습니다." : "No other prominent tendencies were found.";
              secondaryResultsDiv.appendChild(p);
         }
 
-        // Display new storytelling fields
+        // Display new storytelling fields (existing logic)
         if (fullResult.primary.shortSummary) {
             shortSummaryDiv.innerText = fullResult.primary.shortSummary;
             shortSummaryDiv.classList.remove('hidden');
@@ -569,6 +630,8 @@ document.addEventListener('DOMContentLoaded', () => {
       shortSummaryDiv.classList.add('hidden');
       humorousInsightDiv.classList.add('hidden');
       callToActionDiv.classList.add('hidden');
+      document.getElementById('high-score-insight').classList.add('hidden'); // Hide new div
+      document.getElementById('low-score-advice').classList.add('hidden');   // Hide new div
     }
 
     // New function to draw the score chart
@@ -685,6 +748,8 @@ document.addEventListener('DOMContentLoaded', () => {
         shortSummaryDiv.classList.add('hidden');
         humorousInsightDiv.classList.add('hidden');
         callToActionDiv.classList.add('hidden');
+        document.getElementById('high-score-insight').classList.add('hidden'); // Hide new div
+        document.getElementById('low-score-advice').classList.add('hidden');   // Hide new div
     }
 
     // --- Event Listeners ---
