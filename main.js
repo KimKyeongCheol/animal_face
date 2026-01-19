@@ -567,47 +567,70 @@ document.addEventListener('DOMContentLoaded', () => {
       callToActionDiv.classList.add('hidden');
     }
 
-    // New function to draw the score chart (placeholder)
+    // New function to draw the score chart
     function drawScoreChart(scores) {
-        console.log("Drawing score chart with scores:", scores);
-        // Placeholder for actual chart drawing logic.
-        // You would typically integrate a charting library (e.g., Chart.js, D3.js) here
-        // or implement custom SVG/Canvas drawing based on the 'scores' object.
-        // For example, to use Chart.js, you would need to include the library in index.html
-        // and then initialize a chart here:
-        /*
-        const ctx = document.getElementById('myScoreChart').getContext('2d');
+        // Destroy existing chart if it exists to prevent multiple charts on the same canvas
+        const existingChart = Chart.getChart("score-chart");
+        if (existingChart) {
+            existingChart.destroy();
+        }
+
+        const ctx = document.getElementById('score-chart').getContext('2d');
         new Chart(ctx, {
-            type: 'bar', // or 'pie', 'radar', etc.
+            type: 'radar', // Radar chart is good for visualizing multiple variables
             data: {
-                labels: Object.keys(scores),
+                labels: [
+                    langData[currentLang].results.LOGIC_MASTER.title.split(' ')[0],
+                    langData[currentLang].results.EMPATHETIC_SOUL.title.split(' ')[0],
+                    langData[currentLang].results.ORDERLY_GUARDIAN.title.split(' ')[0],
+                    langData[currentLang].results.CHAOTIC_AGENT.title.split(' ')[0]
+                ],
                 datasets: [{
-                    label: 'Scores',
-                    data: Object.values(scores),
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)'
+                    label: langData[currentLang].appTitle + ' ' + (currentLang === 'ko' ? '마인드 유형 점수' : 'Mind Type Scores'),
+                    data: [
+                        scores.logic,
+                        scores.emotion,
+                        scores.order,
+                        scores.chaos
                     ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)'
-                    ],
+                    backgroundColor: 'rgba(75, 192, 192, 0.4)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
                     borderWidth: 1
                 }]
             },
             options: {
+                responsive: true,
+                maintainAspectRatio: false, // Allow canvas to resize freely
                 scales: {
-                    y: {
-                        beginAtZero: true
+                    r: {
+                        angleLines: {
+                            display: true
+                        },
+                        suggestedMin: 0,
+                        suggestedMax: 10, // Assuming scores range from 0 to 10 or similar
+                        pointLabels: {
+                            font: {
+                                size: 14 // Adjust font size for labels
+                            }
+                        },
+                        ticks: {
+                            display: false // Hide ticks for cleaner look
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            font: {
+                                size: 14
+                            }
+                        }
                     }
                 }
             }
         });
-        */
     }
 
 
