@@ -632,81 +632,83 @@ footer {
         border-radius: 8px; /* Apply border-radius to each language button within the menu */
     }
     
-    /* Existing nested media query for very small screens */
-    @media (max-width: 480px) {
-        h1 { /* Targeting global h1 for very small screens */
-            font-size: 1.3rem; /* Even smaller title on very small screens */
-        }
-        #site-logo {
-            height: 1.3rem; /* Match very small screen h1 font-size */
-        }
-        #hamburger-menu-btn {
-            font-size: 1.5rem; /* Even smaller hamburger icon */
-        }
-        main {
-            padding: 0.8rem 0.5rem; /* Even more reduced padding for main */
-        }
-        #start-screen h2 {
-            font-size: 1.4rem; /* Smaller h2 */
-        }
-        #start-screen p {
-            font-size: 0.9rem; /* Smaller paragraph */
-        }
-        #question-text {
-            font-size: 1.2rem; /* Smaller question text */
-        }
-        .answer-btn {
-            padding: 8px 10px; /* Smaller padding for smaller buttons */
-            font-size: 0.9rem; /* Smaller answer button font */
-        }
-        #result-screen h2 {
-            font-size: 1.2rem;
-        }
-        .result-message {
-            font-size: 1.6rem; /* Smaller result message */
-        }
-        .result-description {
-            font-size: 0.8rem; /* Smaller result description */
-        }
-        .pagination-controls {
-            gap: 3px;
-        }
 
-        .pagination-btn {
-            padding: 8px 8px; /* Requested padding */
-            min-width: 27px; /* Requested min-width */
-            font-size: 0.6rem; /* Requested font-size */
-            flex-shrink: 0; /* Keep flex-shrink */
-        }
-        .admin-controls {
-            gap: 6px; /* Smaller gap */
-        }
-        #admin-question-form {
-            gap: 8px; /* Smaller gap */
-        }
-        #admin-question-form h3 {
-            font-size: 1.2rem;
-        }
-        #admin-question-form label {
-            font-size: 0.8rem;
-        }
-        .dual-language-field {
-            gap: 6px;
-        }
-        .admin-choice-item {
-            padding: 8px;
-            gap: 6px;
-        }
-        .score-inputs-wrapper {
-            gap: 8px;
-        }
-        .score-input-group input[type="number"] {
-            width: 35px;
-            padding: 2px;
-            font-size: 0.7rem;
-        }
+}
+
+@media (max-width: 480px) {
+    h1 { /* Targeting global h1 for very small screens */
+        font-size: 1.3rem; /* Even smaller title on very small screens */
     }
-}/* Secondary Results Styling */
+    #site-logo {
+        height: 1.3rem; /* Match very small screen h1 font-size */
+    }
+    #hamburger-menu-btn {
+        font-size: 1.5rem; /* Even smaller hamburger icon */
+    }
+    main {
+        padding: 0.8rem 0.5rem; /* Even more reduced padding for main */
+    }
+    #start-screen h2 {
+        font-size: 1.4rem; /* Smaller h2 */
+    }
+    #start-screen p {
+        font-size: 0.9rem; /* Smaller paragraph */
+    }
+    #question-text {
+        font-size: 1.2rem; /* Smaller question text */
+    }
+    .answer-btn {
+        padding: 8px 10px; /* Smaller padding for smaller buttons */
+        font-size: 0.9rem; /* Smaller answer button font */
+    }
+    #result-screen h2 {
+        font-size: 1.2rem;
+    }
+    .result-message {
+        font-size: 1.6rem; /* Smaller result message */
+    }
+    .result-description {
+        font-size: 0.8rem; /* Smaller result description */
+    }
+    .pagination-controls {
+        gap: 3px;
+    }
+
+    .pagination-btn {
+        padding: 8px 8px; /* Requested padding */
+        min-width: 27px; /* Requested min-width */
+        font-size: 0.6rem; /* Requested font-size */
+        flex-shrink: 0; /* Keep flex-shrink */
+    }
+    .admin-controls {
+        gap: 6px; /* Smaller gap */
+    }
+    #admin-question-form {
+        gap: 8px; /* Smaller gap */
+    }
+    #admin-question-form h3 {
+        font-size: 1.2rem;
+    }
+    #admin-question-form label {
+        font-size: 0.8rem;
+    }
+    .dual-language-field {
+        gap: 6px;
+    }
+    .admin-choice-item {
+        padding: 8px;
+        gap: 6px;
+    }
+    .score-inputs-wrapper {
+        gap: 8px;
+    }
+    .score-input-group input[type="number"] {
+        width: 35px;
+        padding: 2px;
+        font-size: 0.7rem;
+    }
+}
+/* Secondary Results Styling */
 #secondary-results {
     margin-top: 2rem;
     padding-top: 1.5rem;
