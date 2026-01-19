@@ -37,7 +37,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const adminQuestionList = document.getElementById('admin-question-list');
     const adminQuestionForm = document.getElementById('admin-question-form');
     const adminQuestionIndex = document.getElementById('admin-question-index');
-    const adminQuestionText = document.getElementById('admin-question-text');
+    const adminQuestionTextKo = document.getElementById('admin-question-text-ko');
+    const adminQuestionTextEn = document.getElementById('admin-question-text-en');
     const adminQuestionWeight = document.getElementById('admin-question-weight');
     const adminChoicesContainer = document.getElementById('admin-choices-container');
     const adminSaveQuestionBtn = document.getElementById('admin-save-question-btn');
@@ -90,36 +91,42 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Renders the list of questions in the admin screen
-    function renderAdminQuestions(lang) {
+    function renderAdminQuestions() { // Removed lang parameter
         adminQuestionList.innerHTML = ''; // Clear previous list
-        const questions = langData[lang].questions;
+        const questionsKo = langData.ko.questions;
+        const questionsEn = langData.en.questions;
 
-        if (!questions || questions.length === 0) {
-            adminQuestionList.innerHTML = `<p>${lang === 'ko' ? '등록된 질문이 없습니다.' : 'No questions registered.'}</p>`;
+        if (!questionsKo || questionsKo.length === 0) {
+            adminQuestionList.innerHTML = `<p>등록된 질문이 없습니다. / No questions registered.</p>`;
             return;
         }
 
-        questions.forEach((question, index) => {
+        questionsKo.forEach((questionKo, index) => {
+            const questionEn = questionsEn[index] || { text: `[EN translation needed] ${questionKo.text}`, choices: questionKo.choices.map(c => ({...c, text: `[EN translation needed] ${c.text}`})) }; // Get corresponding English question or create placeholder
+            
             const questionItem = document.createElement('div');
             questionItem.classList.add('question-item');
             questionItem.dataset.index = index; // Store index for editing/deleting
 
             let choicesHtml = '';
-            // Ensure logic for scores is always present, even if 0
-            const defaultScores = { logic: 0, emotion: 0, order: 0, chaos: 0 };
-            question.choices.forEach(choice => {
-                const effectiveScores = { ...defaultScores, ...choice.scores };
-                choicesHtml += `<li>${choice.text} (L:${effectiveScores.logic}, E:${effectiveScores.emotion}, O:${effectiveScores.order}, C:${effectiveScores.chaos})</li>`;
-            });
+            // Display both KO and EN choices
+            for(let i=0; i<questionKo.choices.length; i++) {
+                const choiceKo = questionKo.choices[i];
+                const choiceEn = questionEn.choices[i] || { text: `[EN translation needed] ${choiceKo.text}`, scores: choiceKo.scores };
+                const effectiveScores = { ...choiceKo.scores }; // Scores are assumed to be consistent
+
+                choicesHtml += `<li><strong>KO:</strong> ${choiceKo.text} | <strong>EN:</strong> ${choiceEn.text} (L:${effectiveScores.logic}, E:${effectiveScores.emotion}, O:${effectiveScores.order}, C:${effectiveScores.chaos})</li>`;
+            }
+            
 
             questionItem.innerHTML = `
                 <div class="question-item-text">
-                    ${index + 1}. ${question.text} (Weight: ${question.weight || 1})
+                    ${index + 1}. <strong>KO:</strong> ${questionKo.text} (Weight: ${questionKo.weight || 1}) <br> <strong>EN:</strong> ${questionEn.text}
                 </div>
                 <ul>${choicesHtml}</ul>
                 <div class="question-item-controls">
-                    <button class="edit-btn">${lang === 'ko' ? '편집' : 'Edit'}</button>
-                    <button class="delete-btn">${lang === 'ko' ? '삭제' : 'Delete'}</button>
+                    <button class="edit-btn">편집 / Edit</button>
+                    <button class="delete-btn">삭제 / Delete</button>
                 </div>
             `;
             adminQuestionList.appendChild(questionItem);
@@ -129,49 +136,64 @@ document.addEventListener('DOMContentLoaded', () => {
         adminQuestionList.querySelectorAll('.edit-btn').forEach(button => {
             button.addEventListener('click', (e) => {
                 const index = e.target.closest('.question-item').dataset.index;
-                editQuestion(lang, parseInt(index)); // Will create this function later
+                editQuestion(parseInt(index)); // Removed lang parameter
             });
         });
 
         adminQuestionList.querySelectorAll('.delete-btn').forEach(button => {
             button.addEventListener('click', (e) => {
                 const index = e.target.closest('.question-item').dataset.index;
-                deleteQuestion(lang, parseInt(index)); // Will create this function later
+                deleteQuestion(parseInt(index)); // Removed lang parameter
             });
         });
     }
 
     // Helper for admin form to add a choice field
-    function addChoiceField(choiceIndex = adminChoicesContainer.children.length, choice = { text: '', scores: { logic: 0, emotion: 0, order: 0, chaos: 0 } }) {
+    function addChoiceField(choiceIndex = adminChoicesContainer.children.length, choiceKo = { text: '', scores: { logic: 0, emotion: 0, order: 0, chaos: 0 } }, choiceEn = { text: '', scores: { logic: 0, emotion: 0, order: 0, chaos: 0 } }) {
         const choiceItem = document.createElement('div');
         choiceItem.classList.add('admin-choice-item');
         choiceItem.dataset.choiceIndex = choiceIndex;
 
-        // Create score inputs
+        // Create score inputs, assuming scores are consistent across languages for a given choice
         const scoreInputs = ['logic', 'emotion', 'order', 'chaos'].map(type => `
-            <input type="number" placeholder="${type.charAt(0).toUpperCase()}" data-score-type="${type}" value="${choice.scores[type] || 0}" min="-5" max="5" step="1">
+            <div class="score-input-group">
+                <label>${type.charAt(0).toUpperCase()}</label>
+                <input type="number" data-score-type="${type}" value="${choiceKo.scores[type] || 0}" min="-5" max="5" step="1">
+            </div>
         `).join('');
 
         choiceItem.innerHTML = `
-            <input type="text" placeholder="${currentLang === 'ko' ? '선택지 텍스트' : 'Choice Text'}" value="${choice.text}" required>
-            ${scoreInputs}
+            <div class="field-group">
+                <label>선택지 텍스트 (KO)</label>
+                <input type="text" class="choice-text-ko" placeholder="선택지 텍스트 (KO)" value="${choiceKo.text}" required>
+            </div>
+            <div class="field-group">
+                <label>Choice Text (EN)</label>
+                <input type="text" class="choice-text-en" placeholder="Choice Text (EN)" value="${choiceEn.text}" required>
+            </div>
+            <div class="score-inputs-wrapper">
+                ${scoreInputs}
+            </div>
         `;
         adminChoicesContainer.appendChild(choiceItem);
     }
 
-    function editQuestion(lang, index) {
-        const questions = langData[lang].questions;
-        const questionToEdit = questions[index];
+    function editQuestion(index) { // Removed lang parameter
+        const questionKoToEdit = langData.ko.questions[index];
+        const questionEnToEdit = langData.en.questions[index] || { text: `[EN translation needed] ${questionKoToEdit.text}`, choices: questionKoToEdit.choices.map(c => ({...c, text: `[EN translation needed] ${c.text}`})) };
 
         // Fill the form
         adminQuestionIndex.value = index;
-        adminQuestionText.value = questionToEdit.text;
-        adminQuestionWeight.value = questionToEdit.weight !== undefined ? questionToEdit.weight : 1;
+        adminQuestionTextKo.value = questionKoToEdit.text;
+        adminQuestionTextEn.value = questionEnToEdit.text;
+        adminQuestionWeight.value = questionKoToEdit.weight !== undefined ? questionKoToEdit.weight : 1;
         
-        // Clear and fill choices
+        // Clear and fill choices for both languages
         adminChoicesContainer.innerHTML = '';
         for (let i = 0; i < 5; i++) {
-            addChoiceField(i, questionToEdit.choices[i] || undefined);
+            const choiceKo = questionKoToEdit.choices[i] || { text: '', scores: { logic: 0, emotion: 0, order: 0, chaos: 0 } };
+            const choiceEn = questionEnToEdit.choices[i] || { text: '', scores: { logic: 0, emotion: 0, order: 0, chaos: 0 } };
+            addChoiceField(i, choiceKo, choiceEn);
         }
 
         // Show the form and hide the list
@@ -180,12 +202,12 @@ document.addEventListener('DOMContentLoaded', () => {
         adminAddQuestionBtn.classList.add('hidden'); // Hide add question button
     }
 
-    function deleteQuestion(lang, index) {
+    function deleteQuestion(index) { // Removed lang parameter
         if (confirm(langData[currentLang].admin?.confirmDeleteQuestion || (currentLang === 'ko' ? '정말로 이 질문을 삭제하시겠습니까?' : 'Are you sure you want to delete this question?'))) {
             langData.ko.questions.splice(index, 1);
             langData.en.questions.splice(index, 1);
             saveQuestionsToStorage({ ko: langData.ko.questions, en: langData.en.questions });
-            renderAdminQuestions(lang); // Re-render list
+            renderAdminQuestions(); // Removed lang parameter
             // If the deleted question was being edited, clear the form
             if (parseInt(adminQuestionIndex.value) === index) {
                 adminQuestionForm.reset();
@@ -1045,7 +1067,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Show admin screen
                 adminScreen.classList.remove('hidden');
                 // Load and render questions for admin view
-                renderAdminQuestions(currentLang); // Will create this function later
+                renderAdminQuestions(); // Will create this function later
             } else {
                 // Hide admin screen
                 adminScreen.classList.add('hidden');
@@ -1075,12 +1097,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     adminAddQuestionBtn.addEventListener('click', () => {
-        adminQuestionForm.reset();
+        // adminQuestionForm.reset(); // HTML form reset won't clear new textareas by ID
+        adminQuestionIndex.value = -1; // Indicate new question
+        adminQuestionTextKo.value = '';
+        adminQuestionTextEn.value = '';
+        adminQuestionWeight.value = '1'; // Reset weight to default
         adminChoicesContainer.innerHTML = ''; // Clear choices
         for (let i = 0; i < 5; i++) {
-            addChoiceField(i);
+            addChoiceField(i, { text: '', scores: { logic: 0, emotion: 0, order: 0, chaos: 0 } }, { text: '', scores: { logic: 0, emotion: 0, order: 0, chaos: 0 } });
         }
-        adminQuestionIndex.value = -1; // Indicate new question
         adminQuestionForm.classList.remove('hidden');
         adminQuestionList.classList.add('hidden');
         adminAddQuestionBtn.classList.add('hidden');
@@ -1090,72 +1115,87 @@ document.addEventListener('DOMContentLoaded', () => {
         adminQuestionForm.classList.add('hidden');
         adminQuestionList.classList.remove('hidden');
         adminAddQuestionBtn.classList.remove('hidden');
-        adminQuestionForm.reset(); // Clear form
+        // adminQuestionForm.reset(); // HTML form reset won't clear new textareas by ID
+        adminQuestionTextKo.value = ''; // Explicitly clear
+        adminQuestionTextEn.value = ''; // Explicitly clear
+        adminQuestionWeight.value = '1'; // Reset weight to default
         adminChoicesContainer.innerHTML = ''; // Clear choices
     });
 
     adminQuestionForm.addEventListener('submit', (e) => {
         e.preventDefault();
         
-        const questionText = adminQuestionText.value.trim();
+        const questionTextKo = adminQuestionTextKo.value.trim();
+        const questionTextEn = adminQuestionTextEn.value.trim();
         const questionWeight = parseFloat(adminQuestionWeight.value);
-        const choices = [];
 
-        // Collect choices
+        const choicesKo = [];
+        const choicesEn = [];
+
+        // Collect choices for both languages
         Array.from(adminChoicesContainer.children).forEach(choiceItem => {
-            const textInput = choiceItem.querySelector('input[type="text"]');
-            const scoreInputs = choiceItem.querySelectorAll('input[type="number"]');
+            const textInputKo = choiceItem.querySelector('.choice-text-ko');
+            const textInputEn = choiceItem.querySelector('.choice-text-en');
+            const scoreInputs = choiceItem.querySelectorAll('.score-inputs-wrapper input[type="number"]');
             
             const scores = {};
             scoreInputs.forEach(input => {
                 scores[input.dataset.scoreType] = parseInt(input.value) || 0;
             });
 
-            if (textInput.value.trim()) {
-                choices.push({
-                    text: textInput.value.trim(),
+            if (textInputKo.value.trim() && textInputEn.value.trim()) { // Ensure both texts are present
+                choicesKo.push({
+                    text: textInputKo.value.trim(),
+                    scores: scores
+                });
+                choicesEn.push({
+                    text: textInputEn.value.trim(),
                     scores: scores
                 });
             }
         });
 
-        if (!questionText || choices.length < 5) {
+        if (!questionTextKo || !questionTextEn || choicesKo.length < 5) {
             alert(langData[currentLang].admin.fillAllFieldsAlert);
             return;
         }
 
-        const newQuestion = {
-            text: questionText,
+        const newQuestionKo = {
+            text: questionTextKo,
             weight: questionWeight,
-            choices: choices
+            choices: choicesKo
         };
 
-        const currentAdminLang = adminLangKoBtn.classList.contains('active') ? 'ko' : 'en';
+        const newQuestionEn = {
+            text: questionTextEn,
+            weight: questionWeight,
+            choices: choicesEn
+        };
+
         const index = parseInt(adminQuestionIndex.value);
 
         if (index === -1) { // Add new question
-            langData[currentAdminLang].questions.push(newQuestion);
-            const otherLang = currentAdminLang === 'ko' ? 'en' : 'ko';
-            const placeholderQuestion = {
-                ...newQuestion,
-                text: `[${otherLang.toUpperCase()} translation needed] ${newQuestion.text}`,
-                choices: newQuestion.choices.map(c => ({...c, text: `[${otherLang.toUpperCase()} translation needed] ${c.text}`}))
-            }
-            langData[otherLang].questions.push(placeholderQuestion);
-
+            langData.ko.questions.push(newQuestionKo);
+            langData.en.questions.push(newQuestionEn);
         } else { // Edit existing question
-            langData[currentAdminLang].questions[index] = newQuestion;
+            langData.ko.questions[index] = newQuestionKo;
+            langData.en.questions[index] = newQuestionEn;
         }
 
         saveQuestionsToStorage({ ko: langData.ko.questions, en: langData.en.questions });
-        renderAdminQuestions(currentAdminLang);
+        renderAdminQuestions(); // Call without lang parameter
         
         adminQuestionForm.classList.add('hidden');
         adminQuestionList.classList.remove('hidden');
         adminAddQuestionBtn.classList.remove('hidden');
-        adminQuestionForm.reset(); // Clear form
-        adminChoicesContainer.innerHTML = ''; // Clear choices
+        // Reset form fields
+        adminQuestionTextKo.value = '';
+        adminQuestionTextEn.value = '';
+        adminQuestionWeight.value = '1';
+        adminChoicesContainer.innerHTML = '';
     });
+
+
 
     // --- Ad Hiding Functionality ---
     function hideEmptyAdContainers() {
