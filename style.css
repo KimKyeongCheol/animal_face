@@ -75,12 +75,17 @@ header {
     align-items: center; /* Vertically align items */
 }
 
+#header-title-group {
+    display: flex;
+    align-items: center; /* Vertically align logo and h1 */
+}
+
 h1 {
     margin: 0;
     color: var(--primary-color);
     font-size: 2.5rem; /* Original desktop size */
     font-weight: 700;
-    padding: 0 1rem; /* Add horizontal padding for h1 */
+    padding: 0; /* Remove padding from h1 as it's now inside a flex container */
 }
 
 #site-logo {
@@ -569,17 +574,23 @@ footer {
     header {
         padding: 0.3rem 1rem; /* Reduced padding for mobile header height */
         display: flex;
-        justify-content: space-between; /* Space out h1 and hamburger button */
+        justify-content: space-between; /* Space out header-title-group and hamburger button */
         align-items: center;
-        flex-direction: row; /* Ensure h1 and hamburger are in a row */
+        flex-direction: row; /* Ensure items are in a row */
     }
     
+    #header-title-group {
+        display: flex; /* Make title group a flex container */
+        align-items: center; /* Align logo and h1 vertically */
+        flex-grow: 1; /* Allow the title group to take available space */
+        justify-content: center; /* Center content within the group */
+    }
+
     h1 {
         font-size: 1.4rem; /* Reduced default mobile H1 size */
         margin: 0;
         padding: 0;
-        flex-grow: 1; /* Allow h1 to take available space */
-        text-align: center; /* Center h1 on mobile */
+        /* text-align: center; // This is now handled by justify-content: center on #header-title-group */
     }
 
     #site-logo {
