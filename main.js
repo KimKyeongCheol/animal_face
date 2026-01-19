@@ -319,9 +319,13 @@ document.addEventListener('DOMContentLoaded', () => {
                         });    }
 
     function selectAnswer(choice) {
+        // Get the current question to access its weight
+        const currentQuestion = currentTestQuestions[currentQuestionIndex];
+        const questionWeight = (currentQuestion && currentQuestion.weight !== undefined && typeof currentQuestion.weight === 'number') ? currentQuestion.weight : 1;
+
         for (const key in choice.scores) {
             if (scores.hasOwnProperty(key)) {
-                scores[key] += choice.scores[key];
+                scores[key] += choice.scores[key] * questionWeight; // Apply the weight
             }
         }
 
