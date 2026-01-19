@@ -665,14 +665,18 @@ footer {
         .result-message {
             font-size: 1.6rem; /* Smaller result message */
         }
-        #result-description {
+        .result-description {
             font-size: 0.8rem; /* Smaller result description */
         }
+        .pagination-controls {
+            gap: 3px;
+        }
+
         .pagination-btn {
-            padding: 3px 6px; /* Even smaller padding for pagination buttons */
-            font-size: 0.7rem; /* Even smaller font size */
-            min-width: 24px; /* Even smaller min-width */
-            flex-shrink: 0; /* Prevent buttons from shrinking too much */
+            padding: 8px 8px; /* Requested padding */
+            min-width: 27px; /* Requested min-width */
+            font-size: 0.6rem; /* Requested font-size */
+            flex-shrink: 0; /* Keep flex-shrink */
         }
         .admin-controls {
             gap: 6px; /* Smaller gap */
