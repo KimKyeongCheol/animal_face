@@ -40,9 +40,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const adminQuestionText = document.getElementById('admin-question-text');
     const adminQuestionWeight = document.getElementById('admin-question-weight');
     const adminChoicesContainer = document.getElementById('admin-choices-container');
-    const adminAddChoiceBtn = document.getElementById('admin-add-choice-btn');
     const adminSaveQuestionBtn = document.getElementById('admin-save-question-btn');
     const adminCancelEditBtn = document.getElementById('admin-cancel-edit-btn');
+    const adminExitBtn = document.getElementById('admin-exit-btn');
 
     let currentQuestionIndex = 0;
     let scores = { logic: 0, emotion: 0, order: 0, chaos: 0 };
@@ -155,14 +155,8 @@ document.addEventListener('DOMContentLoaded', () => {
         choiceItem.innerHTML = `
             <input type="text" placeholder="${currentLang === 'ko' ? '선택지 텍스트' : 'Choice Text'}" value="${choice.text}" required>
             ${scoreInputs}
-            <button type="button" class="remove-choice-btn">${currentLang === 'ko' ? 'X' : 'X'}</button>
         `;
         adminChoicesContainer.appendChild(choiceItem);
-
-        // Attach event listener to remove button
-        choiceItem.querySelector('.remove-choice-btn').addEventListener('click', (e) => {
-            e.target.closest('.admin-choice-item').remove();
-        });
     }
 
     function editQuestion(lang, index) {
@@ -176,9 +170,9 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Clear and fill choices
         adminChoicesContainer.innerHTML = '';
-        questionToEdit.choices.forEach((choice, choiceIndex) => {
-            addChoiceField(choiceIndex, choice);
-        });
+        for (let i = 0; i < 5; i++) {
+            addChoiceField(i, questionToEdit.choices[i] || undefined);
+        }
 
         // Show the form and hide the list
         adminQuestionList.classList.add('hidden');
@@ -188,7 +182,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function deleteQuestion(lang, index) {
         if (confirm(langData[currentLang].admin?.confirmDeleteQuestion || (currentLang === 'ko' ? '정말로 이 질문을 삭제하시겠습니까?' : 'Are you sure you want to delete this question?'))) {
-            langData[lang].questions.splice(index, 1);
+            langData.ko.questions.splice(index, 1);
+            langData.en.questions.splice(index, 1);
             saveQuestionsToStorage({ ko: langData.ko.questions, en: langData.en.questions });
             renderAdminQuestions(lang); // Re-render list
             // If the deleted question was being edited, clear the form
@@ -199,14 +194,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    function adminAddChoice() {
-        if (adminChoicesContainer.children.length >= 4) {
-            alert(langData[currentLang].admin.choicesMaxAlert);
-            return;
-        }
-        addChoiceField();
-    }
-
     // --- Language Data (questions will be loaded dynamically) ---
     const langData = {
         ko: {
@@ -283,14 +270,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 editFormTitle: "질문 편집/추가",
                 questionTextLabel: "질문 텍스트:",
                 weightLabel: "가중치 (기본 1):",
-                choicesTitle: "선택지 (최대 4개)",
+                choicesTitle: "선택지 (5개 필수)",
                 addChoiceBtn: "선택지 추가",
                 saveBtn: "저장",
-                cancelBtn: "취소",
+                cancelBtn: "편집 취소", // Renamed for clarity
+                exitAdminBtn: "관리 종료", // New button text
                 choiceTextPlaceholder: "선택지 텍스트",
                 noQuestions: "등록된 질문이 없습니다.",
-                choicesMaxAlert: "선택지는 최대 4개까지 추가할 수 있습니다.",
-                fillAllFieldsAlert: "질문 텍스트와 하나 이상의 선택지를 입력해야 합니다."
+                choicesMaxAlert: "선택지는 5개까지 추가할 수 있습니다.",
+                fillAllFieldsAlert: "질문 텍스트와 5개의 선택지를 모두 입력해야 합니다."
             }
         },
         en: {
@@ -367,14 +355,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 editFormTitle: "Edit/Add Question",
                 questionTextLabel: "Question Text:",
                 weightLabel: "Weight (default 1):",
-                choicesTitle: "Choices (max 4)",
+                choicesTitle: "Choices (5 required)",
                 addChoiceBtn: "Add Choice",
                 saveBtn: "Save",
                 cancelBtn: "Cancel",
                 choiceTextPlaceholder: "Choice Text",
                 noQuestions: "No questions registered.",
-                choicesMaxAlert: "You can add a maximum of 4 choices.",
-                fillAllFieldsAlert: "Please enter question text and at least one choice."
+                choicesMaxAlert: "You can add a maximum of 5 choices.",
+                fillAllFieldsAlert: "Please enter question text and all 5 choices."
             }
         }
     };
@@ -1067,6 +1055,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    adminExitBtn.addEventListener('click', () => {
+        adminScreen.classList.add('hidden');
+        startScreen.classList.remove('hidden');
+    });
+
     // Admin Screen Event Listeners
     adminLangKoBtn.addEventListener('click', () => {
         adminLangKoBtn.classList.add('active');
@@ -1083,14 +1076,14 @@ document.addEventListener('DOMContentLoaded', () => {
     adminAddQuestionBtn.addEventListener('click', () => {
         adminQuestionForm.reset();
         adminChoicesContainer.innerHTML = ''; // Clear choices
-        addChoiceField(); // Add one empty choice by default
+        for (let i = 0; i < 5; i++) {
+            addChoiceField(i);
+        }
         adminQuestionIndex.value = -1; // Indicate new question
         adminQuestionForm.classList.remove('hidden');
         adminQuestionList.classList.add('hidden');
         adminAddQuestionBtn.classList.add('hidden');
     });
-
-    adminAddChoiceBtn.addEventListener('click', adminAddChoice);
 
     adminCancelEditBtn.addEventListener('click', () => {
         adminQuestionForm.classList.add('hidden');
@@ -1125,7 +1118,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        if (!questionText || choices.length === 0) {
+        if (!questionText || choices.length < 5) {
             alert(langData[currentLang].admin.fillAllFieldsAlert);
             return;
         }
@@ -1141,6 +1134,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (index === -1) { // Add new question
             langData[currentAdminLang].questions.push(newQuestion);
+            const otherLang = currentAdminLang === 'ko' ? 'en' : 'ko';
+            const placeholderQuestion = {
+                ...newQuestion,
+                text: `[${otherLang.toUpperCase()} translation needed] ${newQuestion.text}`,
+                choices: newQuestion.choices.map(c => ({...c, text: `[${otherLang.toUpperCase()} translation needed] ${c.text}`}))
+            }
+            langData[otherLang].questions.push(placeholderQuestion);
+
         } else { // Edit existing question
             langData[currentAdminLang].questions[index] = newQuestion;
         }
