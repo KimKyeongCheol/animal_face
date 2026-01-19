@@ -41,10 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function showLoading() {
         if (loadingIndicator) {
             loadingIndicator.classList.remove('hidden');
-            // Hide other screens while loading
-            startScreen.classList.add('hidden');
-            testScreen.classList.add('hidden');
-            resultScreen.classList.add('hidden');
         }
     }
 
