@@ -58,8 +58,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     callToAction: "당신의 비범한 논리력을 세상에 보여주세요! 이 결과를 공유하고, 친구들의 마인드 유형도 분석해보세요!",
                     icon: "🧠",
                     className: "result-logic",
-                    highScoreSnippet: "당신의 논리력은 타의 추종을 불허합니다. 어떤 문제든 명쾌하게 분석하고 해결하는 데 뛰어납니다.",
-                    lowScoreSnippet: "때로는 차가운 논리보다는 따뜻한 마음이 필요할 때도 있습니다. 감성적인 접근을 시도해 보세요."
+                    highScoreSnippet: "당신의 가장 큰 강점은 뛰어난 논리력입니다. 복잡한 문제를 명확하게 분석하고 합리적인 해결책을 찾아내는 데 탁월합니다. 데이터와 사실에 기반한 당신의 판단은 항상 믿을 수 있습니다.",
+                    lowScoreSnippet: "때로는 차가운 논리만으로는 해결하기 어려운 상황들이 있습니다. 감정적 교류나 창의적 접근을 시도하며, 다른 사람들의 감정적 반응에도 귀 기울여 보세요. 이는 당신의 시야를 넓히는 데 도움이 될 것입니다."
                 },
                 CHAOTIC_AGENT: {
                     title: "혼돈의 에이전트 🌪️",
@@ -69,8 +69,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     callToAction: "세상은 당신의 혼돈을 기다립니다! 당신의 독특한 마인드 유형을 공유하고, 친구들에게 신선한 충격을 선사하세요!",
                     icon: "🌪️",
                     className: "result-chaos",
-                    highScoreSnippet: "당신의 예측 불가능한 에너지와 창의력은 새로운 가능성을 열어줍니다. 틀에 얽매이지 않는 자유로운 사고가 강점입니다.",
-                    lowScoreSnippet: "가끔은 예측 가능한 질서 속에서 안정감을 찾는 것도 필요합니다. 계획적인 접근을 시도해 보세요."
+                    highScoreSnippet: "당신은 예측 불가능한 에너지와 창의력으로 가득 차 있습니다. 정해진 틀에 얽매이지 않고 새로운 아이디어를 끊임없이 탐색하며, 변화를 두려워하지 않는 혁신가적인 면모가 강점입니다.",
+                    lowScoreSnippet: "가끔은 당신의 자유로운 에너지가 주변에 혼란을 주거나, 중요한 세부 사항을 놓치게 만들 수도 있습니다. 때때로 계획을 세우고, 질서 있는 환경에서 안정감을 찾는 연습을 해보는 것은 어떨까요?"
                 },
                 ORDERLY_GUARDIAN: {
                     title: "질서의 수호자 🛡️",
@@ -80,8 +80,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     callToAction: "안정과 조화의 아이콘! 당신의 질서정연한 마인드를 공유하고, 친구들의 혼란스러운 세상을 구원해주세요!",
                     icon: "🛡️",
                     className: "result-order",
-                    highScoreSnippet: "당신은 안정과 조화를 최우선으로 생각하며, 뛰어난 책임감으로 모든 것을 체계적으로 관리합니다. 주변에 평온을 가져다주는 존재입니다.",
-                    lowScoreSnippet: "때로는 정해진 틀을 벗어나 새로운 시도를 해보는 것도 좋습니다. 예상 밖의 즐거움을 찾아보세요."
+                    highScoreSnippet: "당신의 가장 큰 강점은 안정과 조화를 추구하는 책임감입니다. 모든 상황을 체계적으로 관리하고 질서를 유지하며, 공동체의 안녕을 위해 헌신하는 믿음직스러운 모습이 돋보입니다.",
+                    lowScoreSnippet: "지나치게 계획에 얽매이거나 예측 불가능한 상황에 당황할 수 있습니다. 가끔은 즉흥적인 변화를 받아들이고, 예상치 못한 곳에서 새로운 즐거움을 찾아보는 유연함을 길러보는 것은 어떨까요?"
                 },
                 EMPATHETIC_SOUL: {
                     title: "공감적 중재자 ❤️",
@@ -91,8 +91,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     callToAction: "세상에 따뜻한 위로가 필요한가요? 당신의 공감 가득한 마인드를 공유하고, 지친 이들에게 힘을 불어넣어 주세요!",
                     icon: "❤️",
                     className: "result-emotion",
-                    highScoreSnippet: "타인의 감정을 깊이 이해하고 공감하는 능력은 당신의 가장 큰 장점입니다. 주변 사람들에게 큰 위로와 힘이 됩니다.",
-                    lowScoreSnippet: "때로는 타인의 감정에 너무 휩쓸리지 않고, 객관적인 시각을 유지하는 것이 중요합니다."
+                    highScoreSnippet: "타인의 감정을 깊이 이해하고 공감하는 능력은 당신의 독보적인 강점입니다. 사람과 사람 사이의 관계를 중시하고, 갈등을 원만하게 해결하며, 주변 사람들에게 따뜻한 위로와 힘을 주는 존재입니다.",
+                    lowScoreSnippet: "다른 사람의 감정에 너무 깊이 몰입하거나, 개인적인 감정을 객관화하기 어려워할 수 있습니다. 가끔은 자신을 먼저 챙기고, 이성적인 판단과 거리를 두는 연습을 통해 스스로를 보호하는 지혜가 필요합니다."
                 }
             },
             questions: [] // Questions will be loaded dynamically
@@ -119,8 +119,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     callToAction: "Unleash your extraordinary logic on the world! Share your results and analyze your friends' mind types too!",
                     icon: "🧠",
                     className: "result-logic",
-                    highScoreSnippet: "Your exceptional logic allows you to analyze and solve any problem with clarity. You are a master of rational thought.",
-                    lowScoreSnippet: "Sometimes, a warm heart is needed more than cold logic. Try to approach situations with more empathy."
+                    highScoreSnippet: "Your greatest strength is your outstanding logic. You excel at clearly analyzing complex problems and finding rational solutions. Your decisions, based on data and facts, are always reliable.",
+                    lowScoreSnippet: "Sometimes, situations require more than just cold logic. Try engaging in emotional exchanges or creative approaches, and pay attention to others' emotional responses. This will help broaden your perspective."
                 },
                 CHAOTIC_AGENT: {
                     title: "Chaotic Agent 🌪️",
@@ -130,8 +130,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     callToAction: "The world awaits your beautiful chaos! Share your unique mind type and shock your friends with a dose of fresh perspective!",
                     icon: "🌪️",
                     className: "result-chaos",
-                    highScoreSnippet: "Your unpredictable energy and creativity open up new possibilities. Your strength lies in thinking outside the box.",
-                    lowScoreSnippet: "Sometimes finding stability within a structured order can be beneficial. Try a more planned approach occasionally."
+                    highScoreSnippet: "You are full of unpredictable energy and creativity. Your strength lies in not being confined by rigid frameworks, constantly exploring new ideas, and not being afraid of change—a truly innovative spirit.",
+                    lowScoreSnippet: "Occasionally, your free-spirited energy might cause confusion or lead you to overlook important details. How about practicing setting plans and finding stability in an orderly environment?"
                 },
                 ORDERLY_GUARDIAN: {
                     title: "Orderly Guardian 🛡️",
@@ -141,8 +141,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     callToAction: "Icon of stability and harmony! Share your orderly mind and bring salvation to your friends' chaotic worlds!",
                     icon: "🛡️",
                     className: "result-order",
-                    highScoreSnippet: "You prioritize stability and harmony, managing everything systematically with a strong sense of responsibility. You bring peace to those around you.",
-                    lowScoreSnippet: "Sometimes stepping outside the established framework and trying new things can be beneficial. Discover unexpected joys."
+                    highScoreSnippet: "Your greatest strength is your responsibility, pursuing stability and harmony. You systematically manage all situations, maintain order, and dedicate yourself to the well-being of the community, making you a trustworthy presence.",
+                    lowScoreSnippet: "You might be overly bound by plans or flustered by unpredictable situations. How about practicing flexibility, embracing spontaneous changes, and finding new joys in unexpected places?"
                 },
                 EMPATHETIC_SOUL: {
                     title: "Empathetic Soul ❤️",
@@ -152,8 +152,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     callToAction: "Is the world in need of warm solace? Share your empathetic mind and empower those who are weary!",
                     icon: "❤️",
                     className: "result-emotion",
-                    highScoreSnippet: "Your exceptional ability to deeply understand and empathize with others is your greatest strength. You bring comfort and strength to those around you.",
-                    lowScoreSnippet: "Sometimes it's important to not get too carried away by others' emotions and maintain an objective perspective."
+                    highScoreSnippet: "Your unique strength lies in your deep understanding and empathy for others' emotions. You value human relationships, resolve conflicts smoothly, and bring warm comfort and strength to those around you.",
+                    lowScoreSnippet: "You might sometimes get too deeply immersed in others' emotions or find it difficult to objectify personal feelings. It's important to take care of yourself first, and practice wisdom to protect yourself by sometimes maintaining an objective perspective and distance from emotions."
                 }
             },
             questions: [] // Questions will be loaded dynamically
