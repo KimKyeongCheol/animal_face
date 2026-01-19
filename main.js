@@ -301,6 +301,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 noQuestions: "등록된 질문이 없습니다.",
                 choicesMaxAlert: "선택지는 5개까지 추가할 수 있습니다.",
                 fillAllFieldsAlert: "질문 텍스트와 5개의 선택지를 모두 입력해야 합니다."
+            },
+            alerts: {
+                saveQuestionsError: "질문 저장에 실패했습니다.",
+                loadQuestionsError: "질문을 불러오는 데 실패했습니다. 'data/questions.json' 파일이 올바르게 존재하는지 확인해주세요.",
+                startTestError: "테스트를 시작할 수 없습니다. 질문이 충분히 로드되지 않았습니다.",
+                kakaoShareAlert: "카카오톡 공유 기능은 현재 개발 중입니다.",
+                copySuccess: "결과 텍스트가 클립보드에 복사되었습니다!",
+                copyError: "텍스트 복사에 실패했습니다."
             }
         },
         en: {
@@ -385,6 +393,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 noQuestions: "No questions registered.",
                 choicesMaxAlert: "You can add a maximum of 5 choices.",
                 fillAllFieldsAlert: "Please enter question text and all 5 choices."
+            },
+            alerts: {
+                saveQuestionsError: "Failed to save questions.",
+                loadQuestionsError: "Error loading questions. Please ensure 'data/questions.json' exists and is correctly formatted.",
+                startTestError: "Could not start test. Not enough questions have been loaded.",
+                kakaoShareAlert: "KakaoTalk sharing is currently under development.",
+                copySuccess: "Result text copied to clipboard!",
+                copyError: "Failed to copy text."
             }
         }
     };

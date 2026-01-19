@@ -804,580 +804,176 @@ footer {
 
 
 /* Question Form */
-
-
 #admin-question-form {
-
-
     margin-top: 2rem;
-
-
     border-top: 1px dashed var(--ad-border);
-
-
     padding-top: 1.5rem;
-
-
     display: flex;
-
-
     flex-direction: column;
-
-
     gap: 15px;
-
-
 }
-
-
-
-
 
 #admin-question-form h3 {
-
-
     color: var(--secondary-color);
-
-
     font-size: 1.5rem;
-
-
     margin-bottom: 1rem;
-
-
     text-align: center;
-
-
 }
-
-
-
-
 
 #admin-question-form label {
-
-
     font-weight: 500;
-
-
     color: var(--text-color);
-
-
     margin-bottom: 5px;
-
-
     display: block;
-
-
 }
-
-
-
-
 
 #admin-question-form input[type="text"],
-
-
 #admin-question-form input[type="number"],
-
-
 #admin-question-form textarea {
-
-
-    width: 100%; /* Changed from calc(100% - 20px) to 100% due to flexbox */
-
-
+    width: 100%;
     padding: 10px;
-
-
     border: 1px solid var(--ad-border);
-
-
     border-radius: 5px;
-
-
     background-color: var(--ad-bg);
-
-
     color: var(--text-color);
-
-
     font-size: 1rem;
-
-
     transition: border-color 0.2s ease;
-
-
 }
-
-
-
-
 
 #admin-question-form input[type="text"]:focus,
-
-
 #admin-question-form input[type="number"]:focus,
-
-
 #admin-question-form textarea:focus {
-
-
     border-color: var(--primary-color);
-
-
     outline: none;
-
-
 }
-
-
-
-
 
 #admin-question-form textarea {
-
-
     resize: vertical;
-
-
 }
-
-
-
-
 
 #admin-choices-container {
-
-
     display: flex;
-
-
     flex-direction: column;
-
-
     gap: 10px;
-
-
     margin-top: 10px;
-
-
     margin-bottom: 15px;
-
-
 }
 
-
-
-
-
-/* Updated admin-choice-item for dual language inputs */
-
-
+/* Updated admin-choice-item for dual language inputs and vertical stacking */
 .admin-choice-item {
-
-
-    display: flex; /* Use flex for a more dynamic layout */
-
-
-    flex-wrap: wrap; /* Allow items to wrap on smaller screens */
-
-
-    gap: 10px; /* Space between items */
-
-
-    align-items: center;
-
-
+    display: flex;
+    flex-direction: column; /* Stack all child elements vertically */
+    gap: 10px; /* Space between vertical elements */
+    align-items: stretch; /* Stretch items to fill width */
     background-color: var(--result-card-bg);
-
-
-    padding: 15px; /* Increased padding */
-
-
-    border-radius: 8px; /* Slightly larger border-radius */
-
-
-    box-shadow: 0 2px 8px var(--box-shadow-medium); /* Stronger shadow */
-
-
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px var(--box-shadow-medium);
     margin-bottom: 10px;
-
-
 }
-
-
-
-
 
 .admin-choice-item .field-group {
-
-
-    flex: 1; /* Allow text fields to take available space */
-
-
-    min-width: 120px; /* Minimum width for text fields before wrapping */
-
-
+    width: 100%; /* Ensure field groups take full width */
 }
-
-
-
-
 
 .admin-choice-item input[type="text"] {
-
-
     width: 100%;
-
-
     box-sizing: border-box;
-
-
 }
-
-
-
-
 
 .score-inputs-wrapper {
-
-
     display: flex;
-
-
     gap: 5px;
-
-
     flex-wrap: wrap;
-
-
-    justify-content: center;
-
-
-    flex-shrink: 0; /* Prevent wrapper from shrinking too much */
-
-
+    justify-content: flex-start; /* Align to the start */
+    padding-top: 5px; /* Add some space above scores */
+    border-top: 1px solid var(--ad-border); /* Separator line */
+    width: 100%; /* Ensure it takes full width within the column layout */
 }
-
-
-
-
 
 .score-input-group {
-
-
     display: flex;
-
-
     flex-direction: column;
-
-
     align-items: center;
-
-
     gap: 3px;
-
-
 }
-
-
-
-
 
 .score-input-group label {
-
-
     font-size: 0.8rem;
-
-
     font-weight: 500;
-
-
     color: var(--ad-text-color);
-
-
-    margin-bottom: 0; /* Override default label margin */
-
-
+    margin-bottom: 0;
 }
-
-
-
-
 
 .score-input-group input[type="number"] {
-
-
-    width: 50px; /* Fixed width for score inputs */
-
-
+    width: 50px;
     text-align: center;
-
-
     padding: 5px;
-
-
     font-size: 0.9rem;
-
-
 }
-
-
-
-
 
 /* Remove button for choice item */
-
-
 .admin-choice-item .remove-choice-btn {
-
-
-    background-color: #dc3545; /* Red */
-
-
+    background-color: #dc3545;
     color: white;
-
-
     padding: 8px 12px;
-
-
     border-radius: 5px;
-
-
     font-size: 0.8rem;
-
-
     cursor: pointer;
-
-
     transition: background-color 0.2s ease;
-
-
-    flex-shrink: 0; /* Prevent button from shrinking */
-
-
-    margin-left: auto; /* Push to the right */
-
-
+    text-align: center;
+    width: 100%; /* Make button full width */
+    margin-top: 10px; /* Space from scores */
 }
-
-
-
-
 
 .admin-choice-item .remove-choice-btn:hover {
-
-
     background-color: #c82333;
-
-
 }
-
-
-
-
 
 /* New Form Layout Styles */
-
-
 .form-section {
-
-
     background-color: var(--secondary-color-light);
-
-
     padding: 15px;
-
-
     border-radius: 8px;
-
-
     margin-bottom: 15px;
-
-
     box-shadow: 0 2px 5px var(--box-shadow-light);
-
-
 }
-
-
-
-
 
 .dual-language-field {
-
-
     display: flex;
-
-
-    gap: 15px;
-
-
+    flex-direction: column; /* Stack fields vertically */
+    gap: 10px; /* Adjust gap for vertical stacking */
     margin-bottom: 15px;
-
-
-    flex-wrap: wrap; /* Allow wrapping on smaller screens */
-
-
 }
-
-
-
-
 
 .dual-language-field .field-group {
-
-
     flex: 1;
-
-
     display: flex;
-
-
     flex-direction: column;
-
-
-    min-width: 250px; /* Minimum width for each language field */
-
-
 }
-
-
-
-
 
 .field-group label {
-
-
     margin-bottom: 8px;
-
-
     font-weight: 600;
-
-
     color: var(--question-text-color);
-
-
 }
-
-
-
-
 
 .field-group textarea,
-
-
 .field-group input[type="number"] {
-
-
     width: 100%;
-
-
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
-
-
+    box-sizing: border-box;
 }
-
-
-
-
 
 /* Form actions for buttons */
-
-
 .form-actions {
-
-
     display: flex;
-
-
     justify-content: center;
-
-
     gap: 15px;
-
-
     margin-top: 20px;
-
-
 }
 
-
-
-
-
+/* No specific media query overrides needed for stacking as default is now vertical */
 @media (max-width: 768px) {
-
-
-    .dual-language-field {
-
-
-        flex-direction: column;
-
-
-        gap: 10px;
-
-
-    }
-
-
-    .dual-language-field .field-group {
-
-
-        min-width: unset; /* Remove min-width on small screens */
-
-
-    }
-
-
-
-
-
-    .admin-choice-item {
-
-
-        flex-direction: column;
-
-
-        align-items: stretch; /* Stretch items to fill width */
-
-
-    }
-
-
-    .admin-choice-item .field-group {
-
-
-        width: 100%; /* Full width for text fields */
-
-
-    }
-
-
-    .score-inputs-wrapper {
-
-
-        justify-content: flex-start; /* Align scores to left */
-
-
-        width: 100%;
-
-
-    }
-
-
-    .admin-choice-item .remove-choice-btn {
-
-
-        margin-left: unset; /* Remove auto margin */
-
-
-        width: 100%; /* Full width button */
-
-
-    }
-
-
+    /* Existing mobile styles should largely be compatible with the new vertical layout */
+    /* If specific adjustments are needed, they can be added here. */
 }
-
