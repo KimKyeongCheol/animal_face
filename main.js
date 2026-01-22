@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const mainH1 = document.querySelector('h1');
     const saveImageBtn = document.getElementById('save-image-btn');
     const copyResultBtn = document.getElementById('copy-result-btn');
+    const copyLinkBtn = document.getElementById('copy-link-btn');
 
     const questionText = document.getElementById('question-text');
     const answerButtons = document.getElementById('answer-buttons');
@@ -460,7 +461,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 twitter: "트위터 공유",
                 facebook: "페이스북 공유",
                 saveImage: "이미지로 저장",
-                copyResult: "결과 복사"
+                copyResult: "결과 복사",
+                copyLink: "링크 복사"
             },
             admin: {
                 confirmDeleteQuestion: "정말로 이 질문을 삭제하시겠습니까?",
@@ -554,7 +556,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 twitter: "Share Twitter",
                 facebook: "Share Facebook",
                 saveImage: "Save as Image",
-                copyResult: "Copy Result"
+                copyResult: "Copy Result",
+                copyLink: "Copy Link"
             },
             admin: {
                 confirmDeleteQuestion: "Are you sure you want to delete this question?",
@@ -1345,6 +1348,20 @@ document.addEventListener('DOMContentLoaded', () => {
             .catch(err => {
                 console.error('Failed to copy text: ', err);
                 alert(currentLang === 'ko' ? "텍스트 복사에 실패했습니다." : "Failed to copy text.");
+            });
+    });
+
+    // Add Event Listener for Copy Link Button
+    copyLinkBtn.addEventListener('click', () => {
+        if (!lastCalculatedResult) return; // Ensure there's a result URL to copy
+        const urlToCopy = `${window.location.origin}${window.location.pathname}?result=${lastCalculatedResult.primary.className.replace('result-', '').toUpperCase()}`;
+        navigator.clipboard.writeText(urlToCopy)
+            .then(() => {
+                alert(currentLang === 'ko' ? "결과 링크가 클립보드에 복사되었습니다!" : "Result link copied to clipboard!");
+            })
+            .catch(err => {
+                console.error('Failed to copy link: ', err);
+                alert(currentLang === 'ko' ? "링크 복사에 실패했습니다." : "Failed to copy link.");
             });
     });
 
