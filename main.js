@@ -1076,12 +1076,87 @@ document.addEventListener('DOMContentLoaded', () => {
             callToActionDiv.classList.add('hidden');
         }
 
-        testScreen.classList.add('hidden');
         resultScreen.classList.remove('hidden');
         document.getElementById('share-buttons').classList.remove('hidden'); // Ensure share buttons are visible
 
+        // Update URL with result type
+        const resultType = fullResult.primary.className.replace('result-', '').toUpperCase(); // e.g., LOGIC_MASTER
+        const newUrl = `${window.location.origin}${window.location.pathname}?result=${resultType}`;
+        history.pushState({ path: newUrl }, '', newUrl);
+
         drawScoreChart(fullResult.rawScores); // Draw the score chart
         mobileFullScreenMenu.classList.remove('is-open'); // Close mobile menu when result is shown
+    }
+    
+    // Helper function to simulate a result based on URL parameter
+    function displayResultFromUrl(resultTypeKey) {
+        // Ensure resultTypeKey is valid
+        if (!langData[currentLang].results.hasOwnProperty(resultTypeKey)) {
+            console.warn(`Invalid resultTypeKey: ${resultTypeKey}. Showing start screen.`);
+            goToStartScreen();
+            return;
+        }
+
+        // Create a dummy scores object. The actual scores don't matter when displaying from URL,
+        // as calculateResult will just use the resultTypeKey to get the primary result data.
+        // We just need a non-empty scores object to avoid the "all scores are zero" fallback.
+        const dummyScores = { logic: 1, emotion: 1, order: 1, chaos: 1 }; 
+
+        // Temporarily set scores to trigger calculateResult to find the primary result type
+        // This is a bit of a hack. A better way would be to refactor calculateResult
+        // to directly accept a primaryTypeKey. For now, this works.
+        const originalScores = { ...scores }; // Store original scores
+        scores = { ...dummyScores }; // Set dummy scores
+
+        const fullResult = calculateResult(); // Calculate result based on dummy scores to get primary/secondary data
+        lastCalculatedResult = fullResult; // Store for sharing
+
+        // Override primary result with the one from URL parameter
+        fullResult.primary = langData[currentLang].results[resultTypeKey];
+        fullResult.primary.className = `result-${resultTypeKey.toLowerCase()}`;
+        
+        // Restore original scores (important if the user goes back to a new test)
+        scores = originalScores;
+
+        // Hide other screens and show result screen
+        startScreen.classList.add('hidden');
+        testScreen.classList.add('hidden');
+        adminScreen.classList.add('hidden');
+        resultScreen.classList.remove('hidden');
+
+        // Populate result screen
+        resultTitle.innerText = fullResult.primary.title;
+        resultDescription.innerText = fullResult.primary.description;
+        resultIcon.innerText = fullResult.primary.icon;
+        resultScreen.classList.add(fullResult.primary.className);
+
+        const highScoreInsightDiv = document.getElementById('high-score-insight');
+        const lowScoreAdviceDiv = document.getElementById('low-score-advice');
+        const shortSummaryDiv = document.getElementById('short-summary');
+        const humorousInsightDiv = document.getElementById('humorous-insight');
+        const callToActionDiv = document.getElementById('call-to-action');
+        const secondaryResultsDiv = document.getElementById('secondary-results');
+
+        highScoreInsightDiv.innerText = fullResult.primary.highScoreSnippet || '';
+        highScoreInsightDiv.classList.toggle('hidden', !fullResult.primary.highScoreSnippet);
+
+        lowScoreAdviceDiv.innerText = ''; // Clear for now, as we don't have lowest score from URL
+        lowScoreAdviceDiv.classList.add('hidden'); // Hide
+
+        shortSummaryDiv.innerText = fullResult.primary.shortSummary || '';
+        shortSummaryDiv.classList.toggle('hidden', !fullResult.primary.shortSummary);
+
+        humorousInsightDiv.innerText = fullResult.primary.humorousInsight || '';
+        humorousInsightDiv.classList.toggle('hidden', !fullResult.primary.humorousInsight);
+
+        callToActionDiv.innerText = fullResult.primary.callToAction || '';
+        callToActionDiv.classList.toggle('hidden', !fullResult.primary.callToAction);
+        
+        secondaryResultsDiv.innerHTML = ''; // Clear secondary results when loading from URL
+        
+        document.getElementById('share-buttons').classList.remove('hidden');
+        drawScoreChart(dummyScores); // Draw a dummy chart or hide it if scores are unknown
+        mobileFullScreenMenu.classList.remove('is-open');
     }
     
     function restartTest() {
@@ -1420,15 +1495,27 @@ document.addEventListener('DOMContentLoaded', () => {
     // Load questions, then preferences, then generate initial questions, then hide empty ads
     loadQuestions().then(() => {
         loadPreferences(); // Load language and theme preferences
-        // After questions are loaded and preferences set, generate initial questions
-        if (langData[currentLang] && langData[currentLang].questions && langData[currentLang].questions.length > 0) {
-            generateRandomQuestions();
+
+        // Check for URL result parameter AFTER questions and preferences are loaded
+        const urlParams = new URLSearchParams(window.location.search);
+        const resultParam = urlParams.get('result');
+
+        if (resultParam) {
+            displayResultFromUrl(resultParam);
+            // Additionally, if a result is directly loaded, we should remove the parameter from the URL
+            // to allow users to navigate back to the start screen cleanly.
+            history.replaceState(null, '', window.location.pathname);
         } else {
-            console.error("Initial question generation skipped: Question pool is empty or not properly loaded.");
-            // Consider alerting the user or disabling start button if no questions can be loaded
+            // After questions are loaded and preferences set, generate initial questions
+            if (langData[currentLang] && langData[currentLang].questions && langData[currentLang].questions.length > 0) {
+                generateRandomQuestions();
+            } else {
+                console.error("Initial question generation skipped: Question pool is empty or not properly loaded.");
+                // Consider alerting the user or disabling start button if no questions can be loaded
+            }
+            // Explicitly show the start screen after initial loading is complete
+            startScreen.classList.remove('hidden');
         }
-        // Explicitly show the start screen after initial loading is complete
-        startScreen.classList.remove('hidden');
     }).catch(error => {
         console.error("An error occurred during initial load sequence:", error);
         alert("Failed to load necessary application data. Please ensure the 'data/questions.json' file is accessible and properly formatted, and try running with a local web server.");
